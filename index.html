@@ -181,7 +181,8 @@
     mask-image:radial-gradient(ellipse at 50% 40%, black 0%, transparent 70%);
     pointer-events:none;
   }
-  .hero-inner{position:relative;z-index:2;max-width:920px;}
+  .hero-inner{position:relative;z-index:2;max-width:920px;will-change:transform,opacity;transform-origin:center 40%;}
+  .parallax-layer{will-change:transform;}
   .hero-logo{
     font-family:var(--font-display);
     font-weight:700;
@@ -190,9 +191,12 @@
     letter-spacing:-0.02em;
     background:linear-gradient(115deg,var(--purple) 10%, var(--cyan) 50%, var(--pink) 90%);
     -webkit-background-clip:text;background-clip:text;color:transparent;
-    filter:drop-shadow(0 0 40px rgba(168,85,247,0.45));
+    filter:drop-shadow(0 0 40px rgba(168,85,247,0.45)) drop-shadow(0 0 90px rgba(34,211,238,0.25));
     transform:scale(0.5);opacity:0;
     animation:zoom-in-hero 1.4s cubic-bezier(.16,1,.3,1) forwards;
+    will-change:transform;
+    transform-origin:center center;
+    position:relative;
   }
   @keyframes zoom-in-hero{
     0%{transform:scale(2.4);opacity:0;filter:blur(10px) drop-shadow(0 0 0 transparent);}
@@ -400,6 +404,14 @@
     section{padding:70px 0;}
     .ad-highlight{padding:50px 24px;margin:0 12px;}
   }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+    .hero-logo{opacity:1;transform:none;filter:drop-shadow(0 0 40px rgba(168,85,247,0.45));}
+    .hero-by,.hero h1,.hero p.sub,.hero-ctas,.trust-line{opacity:1;transform:none;}
+    #hero-zoom-target{transform:none !important;filter:none !important;}
+    .parallax-layer{transform:none !important;}
+  }
 </style>
 </head>
 <body>
@@ -435,10 +447,10 @@
   </nav>
 
   <!-- HERO -->
-  <section class="hero">
-    <canvas id="matrix-canvas"></canvas>
-    <div class="circuit-grid"></div>
-    <div class="hero-inner">
+  <section class="hero" id="hero-section">
+    <canvas id="matrix-canvas" class="parallax-layer" data-speed="0.15"></canvas>
+    <div class="circuit-grid parallax-layer" data-speed="0.3"></div>
+    <div class="hero-inner" id="hero-zoom-target">
       <div class="eyebrow" style="margin-bottom:22px;">System online</div>
       <div class="hero-logo">CODE-X</div>
       <div class="hero-by">by <strong>Rocky</strong></div>
@@ -709,6 +721,46 @@
     if(matrixStarted) return;
     matrixStarted = true;
     drawSimpleRain(document.getElementById('matrix-canvas'));
+  }
+
+  // ============ PARALLAX + SCROLL ZOOM-IN TRANSITION (hero) ============
+  const heroSection = document.getElementById('hero-section');
+  const heroZoomTarget = document.getElementById('hero-zoom-target');
+  const parallaxLayers = document.querySelectorAll('.parallax-layer');
+  let ticking = false;
+
+  function updateHeroScrollFX(){
+    const heroHeight = heroSection.offsetHeight;
+    const scrollY = window.scrollY;
+    // progress from 0 (top) to 1 (fully scrolled past hero)
+    const progress = Math.min(Math.max(scrollY / heroHeight, 0), 1);
+
+    // Dramatic zoom-in: hero content scales UP and fades as you scroll down,
+    // like the page is "diving into" the logo (Minh Pham zoom-in transition).
+    const scale = 1 + progress * 1.15;
+    const opacity = 1 - progress * 1.25;
+    const blur = progress * 6;
+    heroZoomTarget.style.transform = `scale(${scale})`;
+    heroZoomTarget.style.opacity = Math.max(opacity, 0);
+    heroZoomTarget.style.filter = `blur(${blur}px)`;
+
+    // Parallax: background layers drift slower than scroll for depth
+    parallaxLayers.forEach(layer=>{
+      const speed = parseFloat(layer.dataset.speed) || 0.2;
+      layer.style.transform = `translateY(${scrollY * speed}px)`;
+    });
+
+    ticking = false;
+  }
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!prefersReducedMotion){
+    window.addEventListener('scroll', function(){
+      if(!ticking){
+        requestAnimationFrame(updateHeroScrollFX);
+        ticking = true;
+      }
+    }, {passive:true});
   }
 
   // ============ SCROLL REVEAL ============
