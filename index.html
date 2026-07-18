@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Master Coding. Build. Earn.</title>
+<title> Master Business Page Generator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -25,7 +26,7 @@
     --font-body:'Inter', sans-serif;
     --font-mono:'JetBrains Mono', monospace;
   }
-
+ 
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
@@ -34,14 +35,14 @@
     font-family:var(--font-body);
     overflow-x:hidden;
     -webkit-font-smoothing:antialiased;
+    min-height:100vh;
   }
   ::selection{background:var(--purple);color:#fff;}
   a{color:inherit;text-decoration:none;}
   button{font-family:inherit;cursor:pointer;border:none;}
   img{max-width:100%;display:block;}
   :focus-visible{outline:2px solid var(--cyan);outline-offset:3px;}
-
-  .mono{font-family:var(--font-mono);}
+ 
   .eyebrow{
     font-family:var(--font-mono);
     font-size:0.72rem;
@@ -53,7 +54,7 @@
     gap:8px;
   }
   .eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
-
+ 
   /* ============ LOGIN GATE ============ */
   #login-gate{
     position:fixed;inset:0;z-index:1000;
@@ -66,9 +67,8 @@
     transition:opacity .6s ease, filter .6s ease, visibility .6s;
   }
   #login-gate.hidden{opacity:0;filter:blur(12px);visibility:hidden;pointer-events:none;}
-
   #login-gate canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0.35;}
-
+ 
   .login-card{
     position:relative;
     width:100%;max-width:400px;
@@ -82,7 +82,7 @@
     animation:card-in .8s cubic-bezier(.16,1,.3,1);
   }
   @keyframes card-in{from{opacity:0;transform:translateY(24px) scale(.97);}to{opacity:1;transform:none;}}
-
+ 
   .login-logo{
     font-family:var(--font-display);
     font-weight:700;
@@ -101,22 +101,29 @@
     display:block;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;
     color:var(--text-dim);margin-bottom:8px;font-family:var(--font-mono);
   }
-  .field input{
+  .field label .opt{color:var(--text-faint);text-transform:none;letter-spacing:0;font-family:var(--font-body);}
+  .field input, .field textarea{
     width:100%;padding:13px 14px;border-radius:10px;
     background:var(--surface-2);
     border:1px solid rgba(255,255,255,0.07);
-    color:var(--text);font-size:0.95rem;
+    color:var(--text);font-size:0.95rem;font-family:var(--font-body);
     transition:border-color .2s, box-shadow .2s;
   }
-  .field input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(168,85,247,0.15);}
-  .login-btn{
-    width:100%;padding:14px;border-radius:10px;margin-top:6px;
+  .field textarea{resize:vertical;min-height:70px;}
+  .field input:focus, .field textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(168,85,247,0.15);}
+  .field-hint{font-size:0.72rem;color:var(--text-faint);margin-top:6px;line-height:1.5;font-family:var(--font-mono);}
+ 
+  .btn-primary{
+    padding:14px 28px;border-radius:10px;
     background:linear-gradient(90deg,var(--purple),var(--cyan));
     color:#0a0a0f;font-weight:700;font-size:0.95rem;letter-spacing:0.01em;
-    transition:transform .2s, box-shadow .2s;
+    transition:transform .2s, box-shadow .2s, opacity .2s;
     box-shadow:0 8px 24px -8px rgba(168,85,247,0.55);
   }
-  .login-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px -8px rgba(34,211,238,0.5);}
+  .btn-primary:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 30px -8px rgba(34,211,238,0.5);}
+  .btn-primary:disabled{opacity:0.45;cursor:not-allowed;transform:none;}
+  .login-btn{width:100%;margin-top:6px;}
+ 
   .login-error{
     color:var(--pink);font-size:0.8rem;text-align:center;margin-top:14px;
     font-family:var(--font-mono);min-height:18px;
@@ -128,18 +135,8 @@
     30%,50%,70%{transform:translateX(-8px);}
     40%,60%{transform:translateX(8px);}
   }
-  .login-hint{
-    text-align:center;margin-top:20px;font-size:0.72rem;color:var(--text-faint);
-    font-family:var(--font-mono);
-  }
-
-  /* ============ LANDING PAGE (hidden until login) ============ */
-  #site{display:none;}
-  #site.visible{display:block;}
-
-  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
-
-  /* NAV */
+ 
+  /* ============ SHARED LAYOUT ============ */
   nav{
     position:fixed;top:0;left:0;right:0;z-index:200;
     display:flex;align-items:center;justify-content:space-between;
@@ -156,625 +153,619 @@
     background:transparent;transition:.2s;
   }
   .logout-btn:hover{border-color:var(--pink);color:var(--pink);}
-
-  /* HERO */
-  .hero{
-    position:relative;min-height:100vh;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;overflow:hidden;padding:120px 24px 60px;
+ 
+  .wrap{max-width:760px;margin:0 auto;padding:0 24px;}
+ 
+  /* ============ GENERATOR ============ */
+  #generator{display:none;}
+  #generator.visible{display:block;}
+  .gen-page{padding:130px 0 100px;}
+  .gen-head{text-align:center;margin-bottom:44px;}
+  .gen-head h1{
+    font-family:var(--font-display);font-weight:700;
+    font-size:clamp(1.7rem,4vw,2.4rem);margin-top:14px;
   }
-  #matrix-canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0.5;}
-  .hero::before{
-    content:'';position:absolute;inset:0;
-    background:
-      radial-gradient(ellipse at 50% 30%, rgba(168,85,247,0.16), transparent 55%),
-      radial-gradient(ellipse at 20% 80%, rgba(34,211,238,0.10), transparent 50%),
-      radial-gradient(ellipse at 80% 75%, rgba(236,72,153,0.08), transparent 50%);
-    pointer-events:none;
-  }
-  .circuit-grid{
-    position:absolute;inset:0;
-    background-image:
-      linear-gradient(rgba(168,85,247,0.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(168,85,247,0.06) 1px, transparent 1px);
-    background-size:48px 48px;
-    mask-image:radial-gradient(ellipse at 50% 40%, black 0%, transparent 70%);
-    pointer-events:none;
-  }
-  .hero-inner{position:relative;z-index:2;max-width:920px;will-change:transform,opacity;transform-origin:center 40%;}
-  .parallax-layer{will-change:transform;}
-  .hero-logo{
-    font-family:var(--font-display);
-    font-weight:700;
-    font-size:clamp(3.2rem, 13vw, 8.5rem);
-    line-height:0.95;
-    letter-spacing:-0.02em;
-    background:linear-gradient(115deg,var(--purple) 10%, var(--cyan) 50%, var(--pink) 90%);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-    filter:drop-shadow(0 0 40px rgba(168,85,247,0.45)) drop-shadow(0 0 90px rgba(34,211,238,0.25));
-    transform:scale(0.5);opacity:0;
-    animation:zoom-in-hero 1.4s cubic-bezier(.16,1,.3,1) forwards;
-    will-change:transform;
-    transform-origin:center center;
-    position:relative;
-  }
-  @keyframes zoom-in-hero{
-    0%{transform:scale(2.4);opacity:0;filter:blur(10px) drop-shadow(0 0 0 transparent);}
-    60%{opacity:1;}
-    100%{transform:scale(1);opacity:1;filter:blur(0) drop-shadow(0 0 40px rgba(168,85,247,0.45));}
-  }
-  .hero-by{
-    font-family:var(--font-mono);font-size:1rem;letter-spacing:0.15em;text-transform:uppercase;
-    color:var(--text-dim);margin-top:6px;
-    opacity:0;animation:fade-up 0.9s ease forwards;animation-delay:1.1s;
-  }
-  .hero-by strong{color:var(--lime);font-weight:600;}
-  .hero h1{
-    font-family:var(--font-display);
-    font-size:clamp(1.7rem, 4.2vw, 3rem);
-    font-weight:700;line-height:1.15;margin-top:36px;
-    opacity:0;animation:fade-up 0.9s ease forwards;animation-delay:1.3s;
-  }
-  .hero h1 .hl{
-    background:linear-gradient(90deg,var(--cyan),var(--lime));
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .hero p.sub{
-    font-size:clamp(1rem,1.6vw,1.15rem);color:var(--text-dim);margin-top:18px;
-    max-width:600px;margin-left:auto;margin-right:auto;line-height:1.6;
-    opacity:0;animation:fade-up 0.9s ease forwards;animation-delay:1.5s;
-  }
-  @keyframes fade-up{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
-  .hero-ctas{
-    display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:38px;
-    opacity:0;animation:fade-up 0.9s ease forwards;animation-delay:1.7s;
-  }
-  .btn-primary{
-    padding:16px 32px;border-radius:12px;font-weight:700;font-size:0.95rem;color:#0a0a0f;
-    background:linear-gradient(90deg,var(--purple),var(--cyan));
-    box-shadow:0 10px 30px -8px rgba(168,85,247,0.55);
-    transition:transform .25s, box-shadow .25s;
-  }
-  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 16px 36px -8px rgba(34,211,238,0.55);}
-  .btn-secondary{
-    padding:16px 32px;border-radius:12px;font-weight:700;font-size:0.95rem;
-    color:var(--lime);border:1px solid rgba(190,245,117,0.4);
-    background:rgba(190,245,117,0.05);
-    transition:.25s;
-  }
-  .btn-secondary:hover{background:rgba(190,245,117,0.12);border-color:var(--lime);transform:translateY(-3px);}
-  .trust-line{
-    margin-top:34px;font-family:var(--font-mono);font-size:0.78rem;color:var(--text-faint);
-    opacity:0;animation:fade-up 0.9s ease forwards;animation-delay:1.9s;
-  }
-  .trust-line span{color:var(--lime);}
-
-  /* SECTION HELPERS */
-  section{position:relative;padding:100px 0;}
-  .section-head{text-align:center;max-width:640px;margin:0 auto 56px;}
-  .section-head h2{
-    font-family:var(--font-display);font-size:clamp(1.8rem,3.6vw,2.6rem);font-weight:700;margin-top:14px;
-  }
-  .section-head p{color:var(--text-dim);margin-top:14px;line-height:1.6;}
-  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease, transform .7s ease;}
-  .reveal.in{opacity:1;transform:none;}
-
-  /* TRUSTED BY */
-  .trusted{padding:56px 0;border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);}
-  .trusted-label{text-align:center;font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-faint);margin-bottom:28px;}
-  .logo-row{display:flex;flex-wrap:wrap;justify-content:center;gap:36px 52px;}
-  .logo-row span{
-    font-family:var(--font-mono);font-size:0.95rem;color:var(--text-faint);
-    letter-spacing:0.03em;transition:.3s;
-  }
-  .logo-row span:hover{color:var(--cyan);}
-
-  /* FEATURE CARDS */
-  .grid-features{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:22px;
-  }
-  .feature-card{
+  .gen-head p{color:var(--text-dim);margin-top:12px;line-height:1.6;}
+ 
+  .gen-card{
     background:rgba(255,255,255,0.02);
     border:1px solid var(--border);
-    border-radius:18px;padding:30px 26px;
+    border-radius:20px;padding:36px 32px;
     backdrop-filter:blur(10px);
-    transition:transform .35s cubic-bezier(.16,1,.3,1), border-color .35s, box-shadow .35s;
   }
-  .feature-card:hover{
-    transform:scale(1.035) translateY(-4px);
-    border-color:var(--accent, var(--purple));
-    box-shadow:0 20px 45px -20px var(--accent, rgba(168,85,247,0.6));
+ 
+  .upload-row{display:flex;align-items:center;gap:18px;margin-bottom:8px;}
+  .logo-preview{
+    width:64px;height:64px;border-radius:14px;flex-shrink:0;
+    background:var(--surface-2);border:1px solid rgba(255,255,255,0.08);
+    display:flex;align-items:center;justify-content:center;overflow:hidden;
+    font-size:1.4rem;color:var(--text-faint);
   }
-  .feature-icon{
-    width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;
-    font-size:1.4rem;margin-bottom:18px;
-    background:color-mix(in srgb, var(--accent, var(--purple)) 15%, transparent);
-    border:1px solid color-mix(in srgb, var(--accent, var(--purple)) 40%, transparent);
+  .logo-preview img{width:100%;height:100%;object-fit:cover;}
+  .upload-btn{
+    padding:11px 18px;border-radius:9px;font-size:0.85rem;font-weight:600;
+    background:var(--surface-2);border:1px solid rgba(255,255,255,0.09);color:var(--text);
+    transition:.2s;
   }
-  .feature-card h3{font-family:var(--font-display);font-size:1.1rem;margin-bottom:10px;}
-  .feature-card p{color:var(--text-dim);font-size:0.9rem;line-height:1.6;}
-
-  /* AD HIGHLIGHT */
-  .ad-highlight{
-    margin:0 24px;border-radius:28px;
+  .upload-btn:hover{border-color:var(--cyan);color:var(--cyan);}
+  input[type="file"]{display:none;}
+ 
+  .photo-grid{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;}
+  .photo-thumb{
+    position:relative;width:78px;height:78px;border-radius:10px;overflow:hidden;
+    border:1px solid rgba(255,255,255,0.08);
+  }
+  .photo-thumb img{width:100%;height:100%;object-fit:cover;}
+  .photo-remove{
+    position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;
+    background:rgba(10,10,15,0.85);color:var(--pink);font-size:0.75rem;
+    display:flex;align-items:center;justify-content:center;line-height:1;
+  }
+  .photo-remove:hover{background:var(--pink);color:#0a0a0f;}
+  .photo-add{
+    width:78px;height:78px;border-radius:10px;border:1px dashed rgba(255,255,255,0.2);
+    display:flex;align-items:center;justify-content:center;color:var(--text-faint);
+    font-size:1.4rem;transition:.2s;
+  }
+  .photo-add:hover{border-color:var(--cyan);color:var(--cyan);}
+ 
+  .divider{height:1px;background:rgba(255,255,255,0.06);margin:28px 0;}
+ 
+  .token-note{
+    display:flex;gap:10px;padding:14px 16px;border-radius:10px;
+    background:rgba(168,85,247,0.06);border:1px solid rgba(168,85,247,0.2);
+    font-size:0.8rem;color:var(--text-dim);line-height:1.6;margin-bottom:18px;
+  }
+  .token-note a{color:var(--cyan);text-decoration:underline;}
+ 
+  .action-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;}
+  .btn-outline{
+    padding:14px 28px;border-radius:10px;font-weight:700;font-size:0.95rem;
+    background:transparent;border:1px solid rgba(190,245,117,0.4);color:var(--lime);
+    transition:.2s;
+  }
+  .btn-outline:hover:not(:disabled){background:rgba(190,245,117,0.1);border-color:var(--lime);}
+  .btn-outline:disabled{opacity:0.4;cursor:not-allowed;}
+ 
+  .status-msg{
+    margin-top:16px;font-family:var(--font-mono);font-size:0.82rem;min-height:18px;
+  }
+  .status-msg.success{color:var(--lime);}
+  .status-msg.error{color:var(--pink);}
+  .status-msg.pending{color:var(--cyan);}
+ 
+  .link-box{
+    margin-top:24px;padding:20px;border-radius:14px;
+    background:rgba(34,211,238,0.06);border:1px solid rgba(34,211,238,0.25);
+    display:none;
+  }
+  .link-box.visible{display:block;}
+  .link-box .eyebrow{color:var(--lime);margin-bottom:12px;}
+  .link-box .eyebrow::before{background:var(--lime);box-shadow:0 0 8px var(--lime);}
+  .link-row{
+    display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+    background:var(--surface-2);border-radius:10px;padding:12px 14px;
+  }
+  .link-row input{
+    flex:1;min-width:180px;background:transparent;border:none;color:var(--cyan);
+    font-family:var(--font-mono);font-size:0.85rem;
+  }
+  .link-row input:focus{outline:none;}
+  .copy-btn{
+    padding:9px 16px;border-radius:8px;font-size:0.8rem;font-weight:600;
+    background:linear-gradient(90deg,var(--purple),var(--cyan));color:#0a0a0f;
+    white-space:nowrap;
+  }
+  .link-hint{font-size:0.76rem;color:var(--text-faint);margin-top:12px;line-height:1.6;}
+ 
+  /* ============ SHARED VIEW (what opens on another phone) ============ */
+  #shared-view{display:none;min-height:100vh;}
+  #shared-view.visible{display:block;}
+  .sv-loading, .sv-error{
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:24px;gap:14px;
+  }
+  .sv-error{color:var(--pink);font-family:var(--font-mono);font-size:0.9rem;}
+  .spinner{
+    width:34px;height:34px;border-radius:50%;
+    border:3px solid rgba(168,85,247,0.2);border-top-color:var(--purple);
+    animation:spin 0.8s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+ 
+  .sv-hero{
+    padding:80px 24px 60px;text-align:center;position:relative;overflow:hidden;
     background:
-      radial-gradient(circle at 15% 20%, rgba(190,245,117,0.12), transparent 50%),
-      radial-gradient(circle at 85% 80%, rgba(236,72,153,0.14), transparent 50%),
-      var(--surface);
-    border:1px solid rgba(190,245,117,0.25);
-    padding:70px 40px;text-align:center;position:relative;overflow:hidden;
+      radial-gradient(ellipse at 50% 20%, rgba(168,85,247,0.16), transparent 55%),
+      radial-gradient(ellipse at 80% 80%, rgba(34,211,238,0.10), transparent 50%);
   }
-  .ad-highlight .eyebrow{color:var(--lime);}
-  .ad-highlight .eyebrow::before{background:var(--lime);box-shadow:0 0 8px var(--lime);}
-  .ad-price{
-    font-family:var(--font-display);font-weight:700;
-    font-size:clamp(2.6rem,7vw,4.6rem);
-    margin:18px 0 8px;
-    background:linear-gradient(90deg,var(--lime),var(--cyan));
+  .sv-logo{
+    width:96px;height:96px;border-radius:22px;margin:0 auto 22px;overflow:hidden;
+    background:var(--surface);border:1px solid rgba(255,255,255,0.08);
+    display:flex;align-items:center;justify-content:center;font-size:2rem;
+    box-shadow:0 0 40px rgba(168,85,247,0.3);
+  }
+  .sv-logo img{width:100%;height:100%;object-fit:cover;}
+  .sv-shop{
+    font-family:var(--font-display);font-weight:700;font-size:clamp(1.8rem,5vw,2.8rem);
+    background:linear-gradient(115deg,var(--purple),var(--cyan));
     -webkit-background-clip:text;background-clip:text;color:transparent;
   }
-  .ad-highlight h3{font-family:var(--font-display);font-size:1.4rem;color:var(--text-dim);font-weight:500;margin-bottom:36px;}
-  .ad-benefits{
-    display:flex;flex-wrap:wrap;justify-content:center;gap:14px 30px;margin-bottom:40px;
-    font-family:var(--font-mono);font-size:0.88rem;
+  .sv-owner{font-family:var(--font-mono);color:var(--text-dim);margin-top:8px;font-size:0.9rem;}
+  .sv-meta{
+    margin-top:26px;display:flex;flex-direction:column;gap:8px;align-items:center;
+    color:var(--text-dim);font-size:0.9rem;
   }
-  .ad-benefits li{list-style:none;display:flex;align-items:center;gap:8px;color:var(--text);}
-  .ad-benefits li::before{content:'✓';color:var(--lime);font-weight:700;}
-  .ad-cta-row{display:flex;flex-direction:column;align-items:center;gap:14px;}
-  .whatsapp-line{font-family:var(--font-mono);font-size:0.85rem;color:var(--text-dim);}
-  .whatsapp-line a{color:var(--lime);font-weight:600;}
-
-  /* TESTIMONIALS */
-  .testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;}
-  .testi-card{
-    background:var(--surface);border:1px solid rgba(255,255,255,0.06);border-radius:18px;
-    padding:26px;transition:transform .3s, border-color .3s;
+  .sv-meta strong{color:var(--text);}
+  .sv-cta{margin-top:30px;}
+ 
+  .sv-gallery{padding:20px 24px 80px;}
+  .sv-gallery h2{
+    text-align:center;font-family:var(--font-display);font-size:1.4rem;margin-bottom:26px;
   }
-  .testi-card:hover{transform:translateY(-4px);border-color:rgba(168,85,247,0.4);}
-  .testi-stars{color:var(--lime);letter-spacing:2px;margin-bottom:14px;font-size:0.9rem;}
-  .testi-quote{color:var(--text-dim);font-size:0.92rem;line-height:1.65;margin-bottom:20px;}
-  .testi-person{display:flex;align-items:center;gap:12px;}
-  .avatar{
-    width:40px;height:40px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    font-family:var(--font-display);font-weight:700;color:#0a0a0f;font-size:0.9rem;
+  .sv-grid{
+    max-width:900px;margin:0 auto;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;
   }
-  .testi-name{font-weight:600;font-size:0.88rem;}
-  .testi-role{font-size:0.76rem;color:var(--text-faint);font-family:var(--font-mono);}
-
-  /* HOW IT WORKS */
-  .steps-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;}
-  .step-card{
-    text-align:left;padding:28px 22px;border-radius:16px;
-    background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.06);
-    transition:transform .3s;
+  .sv-grid img{
+    width:100%;height:180px;object-fit:cover;border-radius:14px;
+    border:1px solid rgba(255,255,255,0.07);transition:transform .3s;
   }
-  .step-card:hover{transform:translateY(-6px);}
-  .step-num{
-    font-family:var(--font-mono);font-size:0.78rem;color:var(--purple);
-    border:1px solid rgba(168,85,247,0.4);border-radius:20px;
-    padding:4px 12px;display:inline-block;margin-bottom:16px;
+  .sv-grid img:hover{transform:scale(1.03);}
+ 
+  .sv-footer{
+    text-align:center;padding:36px 24px;border-top:1px solid rgba(255,255,255,0.05);
+    font-family:var(--font-mono);font-size:0.8rem;color:var(--text-faint);
   }
-  .step-card h4{font-family:var(--font-display);font-size:1.05rem;margin-bottom:8px;}
-  .step-card p{color:var(--text-dim);font-size:0.87rem;line-height:1.55;}
-
-  /* PROJECTS */
-  .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
-  .project-card{
-    border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,0.07);
-    background:var(--surface);
-  }
-  .project-thumb{
-    height:170px;position:relative;overflow:hidden;
-  }
-  .project-thumb .mock{
-    position:absolute;inset:0;transition:transform .5s cubic-bezier(.16,1,.3,1);
-    display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);
-    font-size:0.78rem;color:rgba(255,255,255,0.5);
-  }
-  .project-card:hover .mock{transform:scale(1.12);}
-  .project-info{padding:18px 20px;}
-  .project-info h4{font-family:var(--font-display);font-size:1rem;margin-bottom:4px;}
-  .project-info p{color:var(--text-faint);font-size:0.8rem;font-family:var(--font-mono);}
-
-  /* FINAL CTA */
-  .final-cta{
-    text-align:center;
-    background:
-      radial-gradient(ellipse at 50% 0%, rgba(168,85,247,0.18), transparent 60%),
-      var(--bg-2);
-    border-top:1px solid rgba(255,255,255,0.05);
-  }
-  .final-cta h2{
-    font-family:var(--font-display);font-weight:700;
-    font-size:clamp(2rem,5vw,3.4rem);line-height:1.1;margin-bottom:36px;
-  }
-  .final-cta h2 .hl{
-    background:linear-gradient(90deg,var(--purple),var(--pink));
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .final-btns{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;}
-
-  footer{
-    padding:36px 24px;text-align:center;border-top:1px solid rgba(255,255,255,0.05);
-    font-family:var(--font-mono);font-size:0.78rem;color:var(--text-faint);
-  }
-
+  .sv-footer a{color:var(--pink);font-weight:600;}
+ 
   @media (max-width:640px){
-    section{padding:70px 0;}
-    .ad-highlight{padding:50px 24px;margin:0 12px;}
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
-    .hero-logo{opacity:1;transform:none;filter:drop-shadow(0 0 40px rgba(168,85,247,0.45));}
-    .hero-by,.hero h1,.hero p.sub,.hero-ctas,.trust-line{opacity:1;transform:none;}
-    #hero-zoom-target{transform:none !important;filter:none !important;}
-    .parallax-layer{transform:none !important;}
+    .gen-card{padding:26px 20px;}
   }
 </style>
 </head>
 <body>
-
+ 
 <!-- ============ LOGIN GATE ============ -->
 <div id="login-gate">
   <canvas id="login-canvas"></canvas>
   <form class="login-card" id="login-form" autocomplete="off">
     <div class="login-logo">CODE-X</div>
     <div class="login-sub">// authenticate to continue</div>
-
     <div class="field">
       <label for="username">Username</label>
-      <input type="text" id="username" placeholder="code-x" required>
+      <input type="text" id="username" required>
     </div>
     <div class="field">
       <label for="password">Password</label>
-      <input type="password" id="password" placeholder="••••" required>
+      <input type="password" id="password" required>
     </div>
-
-    <button type="submit" class="login-btn">Login →</button>
+    <button type="submit" class="btn-primary login-btn">Login →</button>
     <div class="login-error" id="login-error"></div>
-    <div class="login-hint">Demo credentials — username: <b>code-x</b> · password: <b>1234</b></div>
   </form>
 </div>
-
-<!-- ============ LANDING PAGE ============ -->
-<div id="site">
-
+ 
+<!-- ============ GENERATOR (shown after login) ============ -->
+<div id="generator">
   <nav>
     <div class="nav-logo">CODE<span>-X</span></div>
     <button class="logout-btn" id="logout-btn">Logout</button>
   </nav>
-
-  <!-- HERO -->
-  <section class="hero" id="hero-section">
-    <canvas id="matrix-canvas" class="parallax-layer" data-speed="0.15"></canvas>
-    <div class="circuit-grid parallax-layer" data-speed="0.3"></div>
-    <div class="hero-inner" id="hero-zoom-target">
-      <div class="eyebrow" style="margin-bottom:22px;">System online</div>
-      <div class="hero-logo">CODE-X</div>
-      <div class="hero-by">by <strong>Rocky</strong></div>
-      <h1>Master Coding. Build Real Projects. <span class="hl">Earn Money.</span></h1>
-      <p class="sub">Learn faster with AI. Create stunning websites &amp; apps. Get your first client in 30 days.</p>
-      <div class="hero-ctas">
-        <a href="#why" class="btn-primary">Start Learning Free</a>
-        <a href="#offer" class="btn-secondary">Get Website in ₹50</a>
-      </div>
-      <div class="trust-line">Trusted by <span>1000+</span> students &amp; developers · <span>4.9/5</span> rating</div>
+ 
+  <div class="gen-page wrap">
+    <div class="gen-head">
+      <div class="eyebrow">Business page generator</div>
+      <h1>Create your shareable business page</h1>
+      <p>Fill in your details, add a few photos, then generate a link you can open on any phone.</p>
     </div>
-  </section>
-
-  <!-- TRUSTED BY -->
-  <div class="trusted">
-    <div class="trusted-label">Students building with Code-X, from</div>
-    <div class="logo-row">
-      <span>IIT Madras</span><span>Anna University</span><span>VIT Vellore</span>
-      <span>NIT Trichy</span><span>SRM Chennai</span><span>PSG Tech</span>
+ 
+    <div class="gen-card">
+      <form id="gen-form">
+ 
+        <div class="field">
+          <label>Logo</label>
+          <div class="upload-row">
+            <div class="logo-preview" id="logo-preview">＋</div>
+            <label class="upload-btn" for="logo-input">Choose logo image</label>
+            <input type="file" id="logo-input" accept="image/*">
+          </div>
+        </div>
+ 
+        <div class="field">
+          <label for="owner-name">Your name</label>
+          <input type="text" id="owner-name" placeholder="e.g. Rocky Kumar" required>
+        </div>
+ 
+        <div class="field">
+          <label for="shop-name">Shop / business name</label>
+          <input type="text" id="shop-name" placeholder="e.g. Rocky's Web Studio" required>
+        </div>
+ 
+        <div class="field">
+          <label for="address">Address</label>
+          <textarea id="address" placeholder="Shop address, city, pincode"></textarea>
+        </div>
+ 
+        <div class="field">
+          <label for="phone">Phone number</label>
+          <input type="tel" id="phone" placeholder="e.g. 98765 43210" required>
+        </div>
+ 
+        <div class="field">
+          <label>Photos <span class="opt">(up to 6, shown in the gallery)</span></label>
+          <div class="photo-grid" id="photo-grid">
+            <label class="photo-add" id="photo-add-btn" for="photo-input">＋</label>
+          </div>
+          <input type="file" id="photo-input" accept="image/*" multiple>
+        </div>
+ 
+        <div class="divider"></div>
+ 
+        <div class="token-note">
+          <span>🔑</span>
+          <span>Your <strong>GitHub token</strong> is used only in your browser to publish this page as a GitHub Gist — it is never sent anywhere else. Create one at
+          <a href="https://github.com/settings/tokens/new?description=Code-X%20Generator&scopes=gist" target="_blank" rel="noopener">github.com/settings/tokens</a>
+          with just the <strong>gist</strong> scope checked.</span>
+        </div>
+ 
+        <div class="field">
+          <label for="gh-token">GitHub token</label>
+          <input type="password" id="gh-token" placeholder="ghp_..." required>
+        </div>
+ 
+        <div class="action-row">
+          <button type="button" class="btn-outline" id="save-btn">Save</button>
+          <button type="submit" class="btn-primary" id="generate-btn">Generate Link</button>
+        </div>
+ 
+        <div class="status-msg" id="status-msg"></div>
+ 
+        <div class="link-box" id="link-box">
+          <div class="eyebrow">Your page is live</div>
+          <div class="link-row">
+            <input type="text" id="share-link" readonly>
+            <button type="button" class="copy-btn" id="copy-btn">Copy</button>
+          </div>
+          <div class="link-hint">
+            Open this link on any phone to view the page. For it to work on other devices, this generator page itself needs to be hosted online (e.g. GitHub Pages) — a copy sitting only on your phone can't be opened by someone else.
+          </div>
+        </div>
+      </form>
     </div>
   </div>
-
-  <!-- WHY CODE-X -->
-  <section id="why" class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">Why Code-X</div>
-      <h2>Everything you need to go from learner to earner</h2>
-      <p>Six tools, one platform — built to take you from your first line of code to your first paying client.</p>
-    </div>
-    <div class="grid-features">
-      <div class="feature-card reveal" style="--accent:var(--purple)">
-        <div class="feature-icon">🤖</div>
-        <h3>AI Code Assistant</h3>
-        <p>Stuck on a bug? Ask the built-in AI and get instant, line-by-line explanations — not just answers.</p>
-      </div>
-      <div class="feature-card reveal" style="--accent:var(--cyan)">
-        <div class="feature-icon">🧩</div>
-        <h3>Real Project Challenges</h3>
-        <p>Skip the toy exercises. Build the same kind of apps and sites clients actually pay for.</p>
-      </div>
-      <div class="feature-card reveal" style="--accent:var(--pink)">
-        <div class="feature-icon">🗂️</div>
-        <h3>Portfolio Builder</h3>
-        <p>Every project you finish is auto-packaged into a shareable portfolio recruiters can browse.</p>
-      </div>
-      <div class="feature-card reveal" style="--accent:var(--lime)">
-        <div class="feature-icon">₹</div>
-        <h3>₹50 Website Service</h3>
-        <p>New to coding? Rocky's team builds your first live website for ₹50 so you launch on day one.</p>
-      </div>
-      <div class="feature-card reveal" style="--accent:var(--purple)">
-        <div class="feature-icon">💬</div>
-        <h3>Community Support</h3>
-        <p>A always-on community of learners and mentors to unblock you, day or night.</p>
-      </div>
-      <div class="feature-card reveal" style="--accent:var(--cyan)">
-        <div class="feature-icon">🚀</div>
-        <h3>Fast Track to Freelancing</h3>
-        <p>Guided playbooks to land your first freelance client within 30 days of starting.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- AD HIGHLIGHT -->
-  <section id="offer">
-    <div class="ad-highlight reveal">
-      <div class="eyebrow">Special offer for beginners</div>
-      <div class="ad-price">₹50 Website</div>
-      <h3>Professional. Live. Yours — in just ₹50.</h3>
-      <ul class="ad-benefits">
-        <li>Dark mode included</li>
-        <li>Colorful, modern design</li>
-        <li>Mobile friendly</li>
-        <li>Fast delivery (24–48 hrs)</li>
-      </ul>
-      <div class="ad-cta-row">
-        <a href="https://wa.me/919876543210" target="_blank" rel="noopener" class="btn-primary">Book Your ₹50 Website Now</a>
-        <div class="whatsapp-line">Or message Rocky directly on WhatsApp: <a href="https://wa.me/919876543210" target="_blank" rel="noopener">+91 98765 43210</a></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">Success stories</div>
-      <h2>Students who built, launched, and got paid</h2>
-    </div>
-    <div class="testi-grid">
-      <div class="testi-card reveal">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-quote">Rocky sir helped me create my first website in just ₹50 using Code-X. I never thought I'd have a live site this fast.</p>
-        <div class="testi-person">
-          <div class="avatar" style="background:var(--purple)">A</div>
-          <div><div class="testi-name">Arun K.</div><div class="testi-role">2nd yr, Anna University</div></div>
-        </div>
-      </div>
-      <div class="testi-card reveal">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-quote">The AI assistant explains bugs better than my seniors do. Went from zero to my first freelance gig in 5 weeks.</p>
-        <div class="testi-person">
-          <div class="avatar" style="background:var(--cyan)">P</div>
-          <div><div class="testi-name">Priya S.</div><div class="testi-role">CSE, VIT Vellore</div></div>
-        </div>
-      </div>
-      <div class="testi-card reveal">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-quote">Portfolio builder got me shortlisted for an internship before I even finished the course. Worth every rupee.</p>
-        <div class="testi-person">
-          <div class="avatar" style="background:var(--pink)">M</div>
-          <div><div class="testi-name">Mohammed R.</div><div class="testi-role">IT, SRM Chennai</div></div>
-        </div>
-      </div>
-      <div class="testi-card reveal">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-quote">Community support at 1am when I was stuck on a deploy issue — someone actually answered. Real people, real help.</p>
-        <div class="testi-person">
-          <div class="avatar" style="background:var(--lime);color:#0a0a0f">S</div>
-          <div><div class="testi-name">Sneha V.</div><div class="testi-role">3rd yr, PSG Tech</div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW IT WORKS -->
-  <section class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">How it works</div>
-      <h2>Four steps from zero to shipped</h2>
-    </div>
-    <div class="steps-row">
-      <div class="step-card reveal">
-        <div class="step-num">01</div>
-        <h4>Sign up free</h4>
-        <p>Create your account and pick a track — web, app, or freelancing.</p>
-      </div>
-      <div class="step-card reveal">
-        <div class="step-num">02</div>
-        <h4>Learn with AI</h4>
-        <p>Work through bite-sized lessons with the AI assistant unblocking you live.</p>
-      </div>
-      <div class="step-card reveal">
-        <div class="step-num">03</div>
-        <h4>Build real projects</h4>
-        <p>Ship apps and sites that go straight into your portfolio.</p>
-      </div>
-      <div class="step-card reveal">
-        <div class="step-num">04</div>
-        <h4>Get your first client</h4>
-        <p>Use Rocky's freelancing playbook to land paid work within 30 days.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURED PROJECTS -->
-  <section class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">Featured projects</div>
-      <h2>Built by students, shipped with Code-X</h2>
-    </div>
-    <div class="projects-grid">
-      <div class="project-card reveal">
-        <div class="project-thumb" style="background:linear-gradient(135deg,rgba(168,85,247,0.35),rgba(10,10,15,0.9))">
-          <div class="mock">portfolio-site.dev</div>
-        </div>
-        <div class="project-info"><h4>Personal Portfolio</h4><p>₹50 website · dark mode</p></div>
-      </div>
-      <div class="project-card reveal">
-        <div class="project-thumb" style="background:linear-gradient(135deg,rgba(34,211,238,0.35),rgba(10,10,15,0.9))">
-          <div class="mock">local-bakery.shop</div>
-        </div>
-        <div class="project-info"><h4>Local Business Site</h4><p>₹50 website · e-commerce</p></div>
-      </div>
-      <div class="project-card reveal">
-        <div class="project-thumb" style="background:linear-gradient(135deg,rgba(236,72,153,0.35),rgba(10,10,15,0.9))">
-          <div class="mock">taskflow-app.io</div>
-        </div>
-        <div class="project-info"><h4>Task Manager App</h4><p>Full-stack project</p></div>
-      </div>
-      <div class="project-card reveal">
-        <div class="project-thumb" style="background:linear-gradient(135deg,rgba(190,245,117,0.3),rgba(10,10,15,0.9))">
-          <div class="mock">campus-events.net</div>
-        </div>
-        <div class="project-info"><h4>Campus Events Board</h4><p>₹50 website · mobile-first</p></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FINAL CTA -->
-  <section class="final-cta wrap">
-    <h2>Ready to Start Your<br><span class="hl">Coding Journey?</span></h2>
-    <div class="final-btns">
-      <a href="#why" class="btn-primary">Join Code-X Now</a>
-      <a href="#offer" class="btn-secondary">Get Your Website for ₹50</a>
-    </div>
-  </section>
-
-  <footer>
-    CODE-X by Rocky · Built for students &amp; aspiring developers in India · © 2026
-  </footer>
-
 </div>
-
+ 
+<!-- ============ SHARED VIEW (opened via ?gist=ID link) ============ -->
+<div id="shared-view">
+  <div class="sv-loading" id="sv-loading">
+    <div class="spinner"></div>
+    <div class="eyebrow">Loading page…</div>
+  </div>
+  <div class="sv-error" id="sv-error" style="display:none;"></div>
+  <div id="sv-content" style="display:none;">
+    <section class="sv-hero">
+      <div class="sv-logo" id="sv-logo">🏪</div>
+      <div class="sv-shop" id="sv-shop"></div>
+      <div class="sv-owner" id="sv-owner"></div>
+      <div class="sv-meta">
+        <div id="sv-address"></div>
+        <div id="sv-phone"></div>
+      </div>
+      <div class="sv-cta">
+        <a href="#" class="btn-primary" id="sv-call-btn">Call Now</a>
+      </div>
+    </section>
+    <section class="sv-gallery" id="sv-gallery" style="display:none;">
+      <h2>Gallery</h2>
+      <div class="sv-grid" id="sv-grid"></div>
+    </section>
+    <div class="sv-footer">
+      Powered by <strong>CODE-X</strong> by Rocky · <a href="https://instagram.com/rocky_1029x" target="_blank" rel="noopener">@rocky_1029x</a> on Instagram
+    </div>
+  </div>
+</div>
+ 
 <script>
-  // ============ LOGIN LOGIC ============
-  const loginGate = document.getElementById('login-gate');
-  const loginForm = document.getElementById('login-form');
-  const loginError = document.getElementById('login-error');
-  const site = document.getElementById('site');
-  const logoutBtn = document.getElementById('logout-btn');
-
-  loginForm.addEventListener('submit', function(e){
-    e.preventDefault();
-    const u = document.getElementById('username').value.trim();
-    const p = document.getElementById('password').value.trim();
-
-    if(u === 'code-x' && p === '1234'){
-      loginGate.classList.add('hidden');
-      site.classList.add('visible');
-      document.body.style.overflow = 'auto';
-      startMatrixRain(); // start hero canvas animation once visible
-    } else {
-      loginError.textContent = 'Invalid username or password. Try again.';
-      loginForm.querySelector('.login-card') ? null : null;
-      const card = document.querySelector('.login-card');
-      card.classList.remove('shake');
-      void card.offsetWidth; // restart animation
-      card.classList.add('shake');
-    }
-  });
-
-  logoutBtn.addEventListener('click', function(){
-    site.classList.remove('visible');
-    loginGate.classList.remove('hidden');
-    document.getElementById('password').value = '';
-    loginError.textContent = '';
-  });
-
-  // ============ BACKGROUND MATRIX RAIN (login screen) ============
-  function drawSimpleRain(canvas){
-    const ctx = canvas.getContext('2d');
-    function resize(){canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;}
-    resize();
-    window.addEventListener('resize', resize);
-    const chars = '01{}<>/;=+-*#'.split('');
-    const fontSize = 14;
-    let columns = Math.floor(canvas.width / fontSize);
-    let drops = new Array(columns).fill(1);
-    function frame(){
-      ctx.fillStyle = 'rgba(10,10,15,0.15)';
-      ctx.fillRect(0,0,canvas.width,canvas.height);
-      ctx.font = fontSize + 'px monospace';
-      for(let i=0;i<drops.length;i++){
-        const text = chars[Math.floor(Math.random()*chars.length)];
-        ctx.fillStyle = Math.random() > 0.97 ? '#22d3ee' : 'rgba(168,85,247,0.55)';
-        ctx.fillText(text, i*fontSize, drops[i]*fontSize);
-        if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i]=0;
-        drops[i]++;
-      }
-      requestAnimationFrame(frame);
-    }
-    frame();
-  }
-  drawSimpleRain(document.getElementById('login-canvas'));
-
-  let matrixStarted = false;
-  function startMatrixRain(){
-    if(matrixStarted) return;
-    matrixStarted = true;
-    drawSimpleRain(document.getElementById('matrix-canvas'));
-  }
-
-  // ============ PARALLAX + SCROLL ZOOM-IN TRANSITION (hero) ============
-  const heroSection = document.getElementById('hero-section');
-  const heroZoomTarget = document.getElementById('hero-zoom-target');
-  const parallaxLayers = document.querySelectorAll('.parallax-layer');
-  let ticking = false;
-
-  function updateHeroScrollFX(){
-    const heroHeight = heroSection.offsetHeight;
-    const scrollY = window.scrollY;
-    // progress from 0 (top) to 1 (fully scrolled past hero)
-    const progress = Math.min(Math.max(scrollY / heroHeight, 0), 1);
-
-    // Dramatic zoom-in: hero content scales UP and fades as you scroll down,
-    // like the page is "diving into" the logo (Minh Pham zoom-in transition).
-    const scale = 1 + progress * 1.15;
-    const opacity = 1 - progress * 1.25;
-    const blur = progress * 6;
-    heroZoomTarget.style.transform = `scale(${scale})`;
-    heroZoomTarget.style.opacity = Math.max(opacity, 0);
-    heroZoomTarget.style.filter = `blur(${blur}px)`;
-
-    // Parallax: background layers drift slower than scroll for depth
-    parallaxLayers.forEach(layer=>{
-      const speed = parseFloat(layer.dataset.speed) || 0.2;
-      layer.style.transform = `translateY(${scrollY * speed}px)`;
+  // ============ HELPERS ============
+  function resizeImage(file, maxDim, quality){
+    return new Promise((resolve, reject)=>{
+      const reader = new FileReader();
+      reader.onload = (e)=>{
+        const img = new Image();
+        img.onload = ()=>{
+          let { width, height } = img;
+          if(width > height && width > maxDim){
+            height = Math.round(height * (maxDim / width));
+            width = maxDim;
+          } else if(height > maxDim){
+            width = Math.round(width * (maxDim / height));
+            height = maxDim;
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width; canvas.height = height;
+          canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.onerror = reject;
+        img.src = e.target.result;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
     });
-
-    ticking = false;
   }
-
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!prefersReducedMotion){
-    window.addEventListener('scroll', function(){
-      if(!ticking){
-        requestAnimationFrame(updateHeroScrollFX);
-        ticking = true;
-      }
-    }, {passive:true});
+ 
+  // ============ SHARED VIEW: render if ?gist= present ============
+  const urlParams = new URLSearchParams(window.location.search);
+  const sharedGistId = urlParams.get('gist');
+ 
+  if(sharedGistId){
+    document.getElementById('login-gate').style.display = 'none';
+    const sharedView = document.getElementById('shared-view');
+    sharedView.classList.add('visible');
+ 
+    fetch('https://api.github.com/gists/' + encodeURIComponent(sharedGistId))
+      .then(res=>{
+        if(!res.ok) throw new Error('Page not found (' + res.status + ')');
+        return res.json();
+      })
+      .then(gist=>{
+        const file = Object.values(gist.files)[0];
+        const data = JSON.parse(file.content);
+ 
+        document.getElementById('sv-loading').style.display = 'none';
+        document.getElementById('sv-content').style.display = 'block';
+ 
+        document.getElementById('sv-shop').textContent = data.shopName || '';
+        document.getElementById('sv-owner').textContent = data.ownerName ? ('by ' + data.ownerName) : '';
+        document.getElementById('sv-address').innerHTML = data.address ? ('<strong>Address:</strong> ' + escapeHtml(data.address)) : '';
+        document.getElementById('sv-phone').innerHTML = data.phone ? ('<strong>Phone:</strong> ' + escapeHtml(data.phone)) : '';
+ 
+        const callBtn = document.getElementById('sv-call-btn');
+        if(data.phone){
+          callBtn.href = 'tel:' + data.phone.replace(/[^0-9+]/g,'');
+        } else {
+          callBtn.style.display = 'none';
+        }
+ 
+        if(data.logo){
+          document.getElementById('sv-logo').innerHTML = '<img src="' + data.logo + '" alt="Logo">';
+        }
+ 
+        if(Array.isArray(data.photos) && data.photos.length){
+          document.getElementById('sv-gallery').style.display = 'block';
+          const grid = document.getElementById('sv-grid');
+          data.photos.forEach(src=>{
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = data.shopName || 'Photo';
+            grid.appendChild(img);
+          });
+        }
+      })
+      .catch(err=>{
+        document.getElementById('sv-loading').style.display = 'none';
+        const errEl = document.getElementById('sv-error');
+        errEl.style.display = 'flex';
+        errEl.textContent = 'Could not load this page: ' + err.message;
+      });
   }
-
-  // ============ SCROLL REVEAL ============
-  const revealEls = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        entry.target.classList.add('in');
-        observer.unobserve(entry.target);
+ 
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+ 
+  // ============ LOGIN LOGIC (skipped entirely for shared view) ============
+  if(!sharedGistId){
+    const loginGate = document.getElementById('login-gate');
+    const loginForm = document.getElementById('login-form');
+    const loginError = document.getElementById('login-error');
+    const generator = document.getElementById('generator');
+    const logoutBtn = document.getElementById('logout-btn');
+ 
+    loginForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      const u = document.getElementById('username').value.trim();
+      const p = document.getElementById('password').value.trim();
+ 
+      if(u === 'code-x' && p === '1234'){
+        loginGate.classList.add('hidden');
+        generator.classList.add('visible');
+        document.body.style.overflow = 'auto';
+      } else {
+        loginError.textContent = 'Invalid username or password. Try again.';
+        const card = document.querySelector('.login-card');
+        card.classList.remove('shake');
+        void card.offsetWidth;
+        card.classList.add('shake');
       }
     });
-  }, {threshold:0.15});
-  revealEls.forEach(el=>observer.observe(el));
+ 
+    logoutBtn.addEventListener('click', function(){
+      generator.classList.remove('visible');
+      loginGate.classList.remove('hidden');
+      document.getElementById('password').value = '';
+      loginError.textContent = '';
+    });
+ 
+    // ============ LOGIN SCREEN MATRIX RAIN ============
+    function drawSimpleRain(canvas){
+      const ctx = canvas.getContext('2d');
+      function resize(){canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;}
+      resize();
+      window.addEventListener('resize', resize);
+      const chars = '01{}<>/;=+-*#'.split('');
+      const fontSize = 14;
+      let columns = Math.floor(canvas.width / fontSize);
+      let drops = new Array(columns).fill(1);
+      function frame(){
+        ctx.fillStyle = 'rgba(10,10,15,0.15)';
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.font = fontSize + 'px monospace';
+        for(let i=0;i<drops.length;i++){
+          const text = chars[Math.floor(Math.random()*chars.length)];
+          ctx.fillStyle = Math.random() > 0.97 ? '#22d3ee' : 'rgba(168,85,247,0.55)';
+          ctx.fillText(text, i*fontSize, drops[i]*fontSize);
+          if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i]=0;
+          drops[i]++;
+        }
+        requestAnimationFrame(frame);
+      }
+      frame();
+    }
+    drawSimpleRain(document.getElementById('login-canvas'));
+ 
+    // ============ GENERATOR FORM LOGIC ============
+    const state = { logo:null, photos:[] };
+    const MAX_PHOTOS = 6;
+ 
+    const logoInput = document.getElementById('logo-input');
+    const logoPreview = document.getElementById('logo-preview');
+    logoInput.addEventListener('change', async (e)=>{
+      const file = e.target.files[0];
+      if(!file) return;
+      const dataUrl = await resizeImage(file, 300, 0.8);
+      state.logo = dataUrl;
+      logoPreview.innerHTML = '<img src="' + dataUrl + '" alt="Logo preview">';
+    });
+ 
+    const photoInput = document.getElementById('photo-input');
+    const photoGrid = document.getElementById('photo-grid');
+    const photoAddBtn = document.getElementById('photo-add-btn');
+ 
+    function renderPhotoGrid(){
+      photoGrid.querySelectorAll('.photo-thumb').forEach(el=>el.remove());
+      state.photos.forEach((src, idx)=>{
+        const thumb = document.createElement('div');
+        thumb.className = 'photo-thumb';
+        thumb.innerHTML = '<img src="' + src + '" alt="Photo ' + (idx+1) + '"><button type="button" class="photo-remove" data-idx="' + idx + '">✕</button>';
+        photoGrid.insertBefore(thumb, photoAddBtn);
+      });
+      photoAddBtn.style.display = state.photos.length >= MAX_PHOTOS ? 'none' : 'flex';
+    }
+ 
+    photoGrid.addEventListener('click', (e)=>{
+      if(e.target.classList.contains('photo-remove')){
+        const idx = parseInt(e.target.dataset.idx, 10);
+        state.photos.splice(idx, 1);
+        renderPhotoGrid();
+      }
+    });
+ 
+    photoInput.addEventListener('change', async (e)=>{
+      const files = Array.from(e.target.files).slice(0, MAX_PHOTOS - state.photos.length);
+      for(const file of files){
+        const dataUrl = await resizeImage(file, 900, 0.72);
+        state.photos.push(dataUrl);
+      }
+      photoInput.value = '';
+      renderPhotoGrid();
+    });
+ 
+    // ============ SAVE ============
+    const statusMsg = document.getElementById('status-msg');
+    function getFormData(){
+      return {
+        ownerName: document.getElementById('owner-name').value.trim(),
+        shopName: document.getElementById('shop-name').value.trim(),
+        address: document.getElementById('address').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        logo: state.logo,
+        photos: state.photos
+      };
+    }
+ 
+    document.getElementById('save-btn').addEventListener('click', ()=>{
+      const data = getFormData();
+      if(!data.ownerName || !data.shopName || !data.phone){
+        statusMsg.className = 'status-msg error';
+        statusMsg.textContent = 'Please fill in your name, shop name, and phone number before saving.';
+        return;
+      }
+      statusMsg.className = 'status-msg success';
+      statusMsg.textContent = '✓ Saved. Add a GitHub token and click Generate Link when ready.';
+    });
+ 
+    // ============ GENERATE (publish to GitHub Gist) ============
+    const genForm = document.getElementById('gen-form');
+    const generateBtn = document.getElementById('generate-btn');
+    const linkBox = document.getElementById('link-box');
+    const shareLinkInput = document.getElementById('share-link');
+ 
+    genForm.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const data = getFormData();
+      const token = document.getElementById('gh-token').value.trim();
+ 
+      if(!data.ownerName || !data.shopName || !data.phone){
+        statusMsg.className = 'status-msg error';
+        statusMsg.textContent = 'Please fill in your name, shop name, and phone number.';
+        return;
+      }
+      if(!token){
+        statusMsg.className = 'status-msg error';
+        statusMsg.textContent = 'A GitHub token is required to generate the link.';
+        return;
+      }
+ 
+      generateBtn.disabled = true;
+      statusMsg.className = 'status-msg pending';
+      statusMsg.textContent = 'Publishing your page…';
+      linkBox.classList.remove('visible');
+ 
+      try{
+        const res = await fetch('https://api.github.com/gists', {
+          method: 'POST',
+          headers:{
+            'Authorization': 'token ' + token,
+            'Accept': 'application/vnd.github+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            description: 'Code-X business page — ' + data.shopName,
+            public: true,
+            files:{
+              'codex-profile.json': { content: JSON.stringify(data) }
+            }
+          })
+        });
+ 
+        if(!res.ok){
+          const errBody = await res.json().catch(()=>({}));
+          throw new Error(errBody.message || ('GitHub API error ' + res.status));
+        }
+ 
+        const gist = await res.json();
+        const shareUrl = window.location.origin + window.location.pathname + '?gist=' + gist.id;
+ 
+        shareLinkInput.value = shareUrl;
+        linkBox.classList.add('visible');
+        statusMsg.className = 'status-msg success';
+        statusMsg.textContent = '✓ Page generated successfully.';
+      } catch(err){
+        statusMsg.className = 'status-msg error';
+        statusMsg.textContent = 'Failed to generate: ' + err.message;
+      } finally {
+        generateBtn.disabled = false;
+      }
+    });
+ 
+    document.getElementById('copy-btn').addEventListener('click', ()=>{
+      shareLinkInput.select();
+      shareLinkInput.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(shareLinkInput.value).then(()=>{
+        const btn = document.getElementById('copy-btn');
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(()=>{ btn.textContent = original; }, 1500);
+      }).catch(()=>{
+        document.execCommand('copy');
+      });
+    });
+  }
 </script>
-
+ 
 </body>
 </html>
+ 
