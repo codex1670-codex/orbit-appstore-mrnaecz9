@@ -1,25 +1,728 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Orbit App Store</title><style>
-:root{--ink:#f4f3ff;--muted:#a8acce;--line:#ffffff1e}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;color:var(--ink);background:#070812;font:15px Inter,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}body:before,body:after{content:"";position:fixed;z-index:-1;width:48vw;height:48vw;border-radius:50%;filter:blur(85px);opacity:.29}body:before{left:-22vw;top:-20vw;background:#5237ff}body:after{right:-21vw;bottom:-22vw;background:#fc3f99}.screen{display:none;min-height:100vh}.screen.active{display:block}.shell{width:min(1110px,calc(100% - 38px));margin:auto}.brand{display:flex;align-items:center;gap:9px;text-transform:uppercase;letter-spacing:.17em;font-size:12px;font-weight:850}.orb{display:inline-block;width:18px;height:18px;border:2px solid white;border-radius:50%;box-shadow:0 0 18px #987bff;position:relative}.orb:after{content:"";position:absolute;width:5px;height:5px;right:-4px;top:0;border-radius:50%;background:#ff65ad}.login{display:grid;place-items:center;padding:24px}.login-card{width:min(430px,100%);padding:40px;border:1px solid var(--line);border-radius:28px;background:#15162bd9;box-shadow:0 30px 90px #0009;backdrop-filter:blur(18px)}h1{font-size:clamp(42px,6vw,76px);letter-spacing:-.075em;line-height:.94;margin:22px 0 10px}.login h1{font-size:43px}.sub,p{color:var(--muted);line-height:1.55}.field{margin:13px 0}.field input{width:100%;border:1px solid var(--line);border-radius:12px;padding:15px;background:#0c0d1b;color:white;font:inherit;outline:none}.field input:focus{border-color:#987cff;box-shadow:0 0 0 3px #886cff28}button{border:0;border-radius:13px;padding:13px 17px;color:#fff;cursor:pointer;font:750 14px inherit;transition:.2s transform,.2s filter}button:hover{transform:translateY(-2px);filter:brightness(1.1)}.primary{width:100%;margin-top:7px;background:linear-gradient(110deg,#755fff,#e84d9f);box-shadow:0 12px 30px #764ea85c}.top{display:flex;justify-content:space-between;align-items:center;padding:28px 0}.profile{display:flex;align-items:center;gap:9px;font-size:13px;color:#d1d2ec}.avatar{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#f460a9,#7661ff);font-weight:900}.hero{display:flex;justify-content:space-between;align-items:end;gap:28px;padding:42px 0 26px}.hero h1{margin:8px 0}.hero p{max-width:530px}.eyebrow{font-size:11px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:#b2a1ff}.counter{white-space:nowrap;border:1px solid var(--line);border-radius:99px;padding:11px 15px;font-size:13px}.filters{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}.filter{padding:8px 13px;border:1px solid var(--line);border-radius:99px;background:#171828;color:#c2c4df;font-size:12px}.filter.active{background:#f1f0ff;color:#171727}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;padding-bottom:112px}.app{min-height:188px;padding:17px;position:relative;overflow:hidden;border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,#1b1d33df,#0d0e1bcf);cursor:pointer;transition:.25s transform,.25s border}.app:hover{transform:translateY(-5px);border-color:#987bff}.app.selected{border-color:#ed65ad;background:#2c1c3e}.app:after{content:"";position:absolute;right:-35px;bottom:-38px;width:116px;height:116px;border-radius:50%;background:var(--glow);filter:blur(28px);opacity:.23}.check{position:absolute;z-index:1;right:14px;top:14px;width:23px;height:23px;display:grid;place-items:center;border:1px solid #838ab0;border-radius:50%;font-size:13px}.selected .check{background:#e958a6;border-color:#e958a6}.app-icon{width:54px;height:54px;object-fit:contain;padding:9px;border-radius:15px;background:#fff;box-shadow:0 10px 19px #0006}.app h3{margin:17px 0 5px;font-size:16px;letter-spacing:-.03em}.app small{font-size:11px;color:#9da3c4;line-height:1.35}.region{position:absolute;right:15px;bottom:14px;font-size:9px;letter-spacing:.12em;color:#aeb2d0;font-style:normal}.generate{position:fixed;z-index:4;bottom:18px;left:50%;width:min(560px,calc(100% - 38px));transform:translateX(-50%);padding:11px 12px 11px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #ffffff27;border-radius:18px;background:#20213cee;box-shadow:0 19px 50px #0009;backdrop-filter:blur(17px)}.generate span{font-size:13px;color:#d1d3eb}.generate button{background:linear-gradient(110deg,#8067ff,#ed56a2);white-space:nowrap}.generate button:disabled{opacity:.4;cursor:not-allowed}.modal{position:fixed;z-index:10;inset:0;display:none;place-items:center;padding:22px;background:#060712aa;backdrop-filter:blur(9px)}.modal.show{display:grid}.modal-card{width:min(450px,100%);padding:30px;border:1px solid var(--line);border-radius:24px;background:#191a30;box-shadow:0 25px 70px #000b}.modal-card h2{margin:0 0 9px;letter-spacing:-.055em}.modal-card p{font-size:13px}.url{overflow-wrap:anywhere;margin:16px 0;padding:12px;border:1px solid var(--line);border-radius:10px;background:#0c0d1b;color:#c9cbed;font-size:12px}.actions{display:flex;gap:9px}.actions>*{flex:1;padding:11px;border:1px solid var(--line);border-radius:11px;background:#ffffff14;color:#fff;text-align:center;text-decoration:none;font-size:13px;font-weight:750}.actions .live{border:0;background:linear-gradient(110deg,#8067ff,#ed56a2)}.showcase{background:radial-gradient(circle at 50% 20%,#30185d,#0a0b19 42%,#05050b 85%)}.show-head{position:fixed;z-index:5;top:0;left:0;right:0;padding:23px max(24px,calc((100% - 1110px)/2));display:flex;justify-content:space-between;background:linear-gradient(#090a16e8,transparent)}.exit{padding:9px 12px;border:1px solid var(--line);background:#ffffff11;font-size:12px}.stage{height:100vh;display:grid;place-items:center;perspective:1400px;overflow:hidden}.aurora{position:absolute;width:min(85vw,900px);height:min(85vw,900px);border-radius:50%;background:conic-gradient(#f6489a,#705fff,#25d9d3,#705fff,#f6489a);opacity:.25;filter:blur(95px);animation:spin 18s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.phone{z-index:2;width:min(310px,77vw);height:min(640px,83vh);position:relative;padding:10px;border-radius:43px;background:linear-gradient(145deg,#717594,#11121f 13%,#363850);box-shadow:23px 31px 72px #000b,inset 2px 2px 1px #fff5;transform:rotateX(8deg) rotateY(-12deg);transition:.25s transform}.phone:before{content:"";position:absolute;z-index:3;left:50%;top:15px;transform:translateX(-50%);width:100px;height:26px;border-radius:20px;background:#05050a}.device{height:100%;padding:43px 17px 15px;border-radius:34px;overflow:hidden;background:linear-gradient(155deg,#251342,#100f28 60%,#071020)}.device small{font-size:10px;letter-spacing:.1em;color:#c6c8e8}.device h2{margin:7px 0 3px;font-size:27px;letter-spacing:-.06em}.device p{margin:0 0 14px;font-size:12px}.deck{height:calc(min(640px,83vh) - 125px);overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none}.deck::-webkit-scrollbar{display:none}.spot{scroll-snap-align:center;position:relative;overflow:hidden;min-height:318px;margin:10px 2px 28px;padding:24px;display:flex;justify-content:end;flex-direction:column;border-radius:27px;background:linear-gradient(145deg,var(--card),#141526);box-shadow:0 19px 38px #0008}.spot:after{content:"";position:absolute;right:-42px;top:-53px;width:160px;height:160px;border:1px solid #fff5;border-radius:50%;box-shadow:0 0 0 20px #fff1,0 0 0 42px #fff1}.logo-link{position:absolute;z-index:2;top:28px;left:24px;display:block}.spot img{display:block;width:82px;height:82px;object-fit:contain;padding:12px;background:#fff;border-radius:23px;box-shadow:0 16px 27px #0006}.spot h3{z-index:1;margin:0;font-size:30px;letter-spacing:-.07em}.spot span{z-index:1;margin:6px 0 15px;font-size:12px}.open{z-index:1;width:max-content;padding:10px 13px;border-radius:11px;background:#fff;color:#171529;text-decoration:none;font-size:12px;font-weight:850}.scroll-note{position:absolute;bottom:23px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#d2d3e7}.toast{position:fixed;z-index:12;top:22px;left:50%;transform:translate(-50%,-80px);padding:12px 17px;border-radius:99px;background:#efefff;color:#171728;font-size:13px;font-weight:800;transition:.3s}.toast.on{transform:translate(-50%,0)}@media(max-width:720px){.hero{display:block;padding-top:25px}.hero h1{font-size:50px}.counter{display:inline-block;margin-top:5px}.grid{grid-template-columns:repeat(2,1fr);gap:10px}.app{min-height:170px;padding:14px}.app h3{margin-top:14px}.app-icon{width:47px;height:47px}.phone{transform:rotateX(3deg) rotateY(-5deg)}}
-</style><style>.theme-picker{margin:4px 0 22px}.theme-title{display:flex;justify-content:space-between;align-items:center;margin:0 0 10px;color:#c9cbed;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.theme-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}.theme-tile{min-height:104px;padding:12px 10px;text-align:left;border:1px solid #ffffff1c;border-radius:16px;background:#141527;color:#fff;position:relative;overflow:hidden}.theme-tile:before{content:'';position:absolute;inset:0;opacity:.8;background:var(--preview)}.theme-tile>*{position:relative;z-index:1}.theme-tile b{display:block;font-size:12px;line-height:1.05}.theme-tile small{display:block;margin-top:8px;color:#dadbf0;font-size:9px;line-height:1.25}.theme-tile.active{border-color:#fff;box-shadow:0 0 0 2px #987cff55}.theme-aurora .stage{background:radial-gradient(circle at 50% 20%,#321a67,#090a1a 43%,#04040a 85%)}.theme-aurora .spot{box-shadow:0 19px 38px #0008,0 0 38px var(--card)}.theme-neon .stage{background:repeating-linear-gradient(90deg,#070812 0 1px,#080a1c 1px 50px),radial-gradient(circle at 50% 10%,#032b56,#080812 55%)}.theme-neon .phone{box-shadow:0 0 0 1px #7af9ff,0 0 35px #2aeeff99,20px 30px 80px #000}.theme-neon .spot{border:1px solid #6df5ff99;box-shadow:inset 0 1px #ffffff99,0 18px 42px #00e5ff55;transform:rotateY(-4deg)}.theme-slate .stage{background:linear-gradient(135deg,#27323e,#10151d 46%,#06080c)}.theme-slate .phone{border-radius:30px;background:linear-gradient(145deg,#98a9b7,#1b2630 16%,#596d7b)}.theme-slate .device{border-radius:23px;background:linear-gradient(145deg,#2e4150,#111b24)}.theme-slate .spot{border-radius:12px;background:linear-gradient(145deg,#71899a,#182631 59%,#0a1118);box-shadow:18px 22px 0 #0003,0 20px 45px #0009}.theme-obsidian .stage{background:radial-gradient(ellipse at 30% 30%,#25223c,#07070e 58%)}.theme-obsidian .phone{background:linear-gradient(125deg,#0b0b12,#4b4961 49%,#09090f);box-shadow:25px 32px 75px #000,0 0 0 1px #aaa8d144}.theme-obsidian .spot{background:linear-gradient(135deg,#1b1a2a,#06070c 62%,#343246);border:1px solid #ffffff30;clip-path:polygon(8% 0,92% 0,100% 8%,100% 92%,92% 100%,8% 100%,0 92%,0 8%)}.theme-sunset .stage{background:radial-gradient(circle at 60% 15%,#7b335c,#311637 38%,#100d22 68%)}.theme-sunset .phone{background:linear-gradient(145deg,#ffb36b,#532545 14%,#ca5379);box-shadow:0 0 45px #ff6d6855,24px 34px 75px #000}.theme-sunset .spot{background:linear-gradient(145deg,#f29a64,#b44e69 47%,#3d2555);box-shadow:0 21px 45px #ff5f7960}.theme-sunset .spot:after{border-color:#ffe7b455;box-shadow:0 0 0 20px #ffe7b415,0 0 0 42px #ffe7b410}@media(max-width:720px){.theme-strip{grid-template-columns:repeat(5,minmax(105px,1fr));overflow-x:auto;padding-bottom:5px}.theme-tile{min-height:92px}}</style></head><body><div id="toast" class="toast">Your orbit is full — remove an app first</div>
-<section id="login" class="screen login"><form id="loginForm" class="login-card"><div class="brand"><i class="orb"></i> Orbit Studio</div><h1>Create your<br>app orbit.</h1><p class="sub">Turn trending apps into a shareable, animated App Store.</p><div class="field"><input id="user" aria-label="Username" autocomplete="username" required=""></div><div class="field"><input id="pass" aria-label="Password" type="password" autocomplete="current-password" required=""></div><button class="primary">Enter studio →</button></form></section>
-<section id="setup" class="screen active"><main class="shell"><header class="top"><div class="brand"><i class="orb"></i> Orbit Studio</div><div class="profile"><b id="initial" class="avatar">S</b><span id="creator">sanjiv</span></div></header><div class="hero"><div><div class="eyebrow">Curated signal · July 2026</div><h1>Build your<br>app orbit.</h1><p>Choose ten trending apps from Asia and America. Your collection becomes an immersive App Store.</p></div><div class="counter"><b id="count">10</b> / 10 selected</div></div><nav class="filters"><button class="filter active" data-filter="All">All apps</button><button class="filter" data-filter="AI">Artificial intelligence</button><button class="filter" data-filter="Social">Social</button><button class="filter" data-filter="Media">Entertainment</button><button class="filter" data-filter="Utility">Lifestyle</button></nav><section id="themePicker" class="theme-picker"><div class="theme-title"><span>Premium 3D experience</span><span>Sunset Fan</span></div><div class="theme-strip"><button class="theme-tile " data-theme="aurora" style="--preview:radial-gradient(circle,#ff77be,#4f3cff 70%)"><b>Aurora Orbit</b><small>Iridescent light and orbital glow</small></button><button class="theme-tile " data-theme="neon" style="--preview:linear-gradient(135deg,#0ce9ff,#3916a8 50%,#ff1fe1)"><b>Neon Coverflow</b><small>Electric depth and glass reflections</small></button><button class="theme-tile " data-theme="slate" style="--preview:linear-gradient(135deg,#91aaba,#1b2a34 60%)"><b>Slate Cascade</b><small>Calm architectural layers</small></button><button class="theme-tile " data-theme="obsidian" style="--preview:linear-gradient(135deg,#4d4a62,#090910 55%)"><b>Obsidian Cube</b><small>Dark crystalline dimensionality</small></button><button class="theme-tile active" data-theme="sunset" style="--preview:linear-gradient(135deg,#ffc079,#c34d73 55%,#43265c)"><b>Sunset Fan</b><small>Warm cinematic gradient arcs</small></button></div></section><div id="grid" class="grid"><article class="app selected" data-id="0" style="--glow:#6958ef"><b class="check">✓</b><img class="app-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/openai.svg" alt="ChatGPT logo" onerror="this.style.display='none'"><h3>ChatGPT</h3><small>The global leader in conversational AI.</small><i class="region">America</i></article><article class="app selected" data-id="1" style="--glow:#4d91ff"><b class="check">✓</b><img class="app-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/googlegemini.svg" alt="Google Gemini logo" onerror="this.style.display='none'"><h3>Google Gemini</h3><small>Fast assistance and image generation.</small><i class="region">America</i></article><article class="app selected" data-id="2" style="--glow:#e8448b"><b class="check">✓</b><img class="app-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/instagram.svg" alt="Instagram logo" onerror="this.style.display='none'"><h3>Instagram</h3><small>Visual culture, Reels, and connection.</small><i class="region">America</i></article><article class="app selected" data-id="3" style="--glow:#20b868"><b class="check">✓</b><img class="app-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/whatsapp.svg" alt="WhatsApp logo" onerror="this.style.display='none'"><h3>WhatsApp</h3><small>The world’s favorite way to message.</small><i class="region">Asia</i></article><article class="app " data-id="4" style="--glow:#1f9661"><b class="check"></b><img class="app-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/whatsapp.svg" alt="WhatsApp Business logo" onerror="this.style.display='none'"><h3>WhatsApp Business</h3><small>Powering the next small business.</small><i class="region">Asia</i></article><article class="app selected" data-id="5" style="--glow:#303747"><b class="check">✓</b><img class="app-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/x.svg" alt="X logo" onerror="this.style.display='none'"><h3>X</h3><small>The live global conversation.</small><i class="region">America</i></article><article class="app selected" data-id="6" style="--glow:#5965f2"><b class="check">✓</b><img class="app-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/discord.svg" alt="Discord logo" onerror="this.style.display='none'"><h3>Discord</h3><small>Communities, study sessions, and voice.</small><i class="region">America</i></article><article class="app selected" data-id="7" style="--glow:#1fbb5c"><b class="check">✓</b><img class="app-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/spotify.svg" alt="Spotify logo" onerror="this.style.display='none'"><h3>Spotify</h3><small>Music for every orbit.</small><i class="region">America</i></article><article class="app selected" data-id="8" style="--glow:#e62c37"><b class="check">✓</b><img class="app-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/youtube.svg" alt="YouTube logo" onerror="this.style.display='none'"><h3>YouTube</h3><small>Stories, shorts, and live culture.</small><i class="region">America</i></article><article class="app selected" data-id="9" style="--glow:#f07727"><b class="check">✓</b><img class="app-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/crunchyroll.svg" alt="Crunchyroll logo" onerror="this.style.display='none'"><h3>Crunchyroll</h3><small>Anime, always on.</small><i class="region">America</i></article><article class="app " data-id="10" style="--glow:#d5222a"><b class="check"></b><img class="app-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/netflix.svg" alt="Netflix logo" onerror="this.style.display='none'"><h3>Netflix</h3><small>The screen everyone shares.</small><i class="region">America</i></article><article class="app " data-id="11" style="--glow:#65b92f"><b class="check"></b><img class="app-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/duolingo.svg" alt="Duolingo logo" onerror="this.style.display='none'"><h3>Duolingo</h3><small>A joyful daily learning habit.</small><i class="region">America</i></article><article class="app " data-id="12" style="--glow:#4c7ced"><b class="check"></b><img class="app-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/zoom.svg" alt="Zoom Workplace logo" onerror="this.style.display='none'"><h3>Zoom Workplace</h3><small>Meet, create, and connect.</small><i class="region">America</i></article><article class="app selected" data-id="13" style="--glow:#596174"><b class="check">✓</b><img class="app-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/capcut.svg" alt="CapCut logo" onerror="this.style.display='none'" style="display: none;"><h3>CapCut</h3><small>Edit culture at the speed of scroll.</small><i class="region">Asia</i></article><article class="app " data-id="14" style="--glow:#22212c"><b class="check"></b><img class="app-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/tiktok.svg" alt="TikTok logo" onerror="this.style.display='none'"><h3>TikTok</h3><small>The global discovery engine.</small><i class="region">Asia</i></article><article class="app " data-id="15" style="--glow:#1db9b2"><b class="check"></b><img class="app-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/canva.svg" alt="Canva logo" onerror="this.style.display='none'"><h3>Canva</h3><small>Design anything, beautifully.</small><i class="region">Asia</i></article><article class="app " data-id="16" style="--glow:#23b65e"><b class="check"></b><img class="app-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/line.svg" alt="LINE logo" onerror="this.style.display='none'"><h3>LINE</h3><small>Stickers, stories, and community.</small><i class="region">Asia</i></article><article class="app " data-id="17" style="--glow:#28a25e"><b class="check"></b><img class="app-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/grab.svg" alt="Grab logo" onerror="this.style.display='none'"><h3>Grab</h3><small>Everyday services across Southeast Asia.</small><i class="region">Asia</i></article><article class="app " data-id="18" style="--glow:#ef5a2c"><b class="check"></b><img class="app-icon" src="https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/shopee.svg" alt="Shopee logo" onerror="this.style.display='none'"><h3>Shopee</h3><small>Shopping, local and live.</small><i class="region">Asia</i></article></div></main><div class="generate"><span id="generateText">Your 10 apps are ready</span><button id="generateButton" disabled="">Publishing…</button></div></section>
-<section id="showcase" class="screen showcase theme-sunset"><header class="show-head"><div class="brand"><i class="orb"></i> App Store</div><button id="exit" class="exit">Exit preview</button></header><main class="stage"><div class="aurora"></div><div id="phone" class="phone"><div class="device"><small id="curatedBy">CURATED BY YOU</small><h2>App Orbit</h2><p>Scroll to explore · tap a logo to open</p><div id="deck" class="deck"></div></div></div><div class="scroll-note">Scroll to travel ↓</div></main></section>
-<aside id="shareModal" class="modal"><div class="modal-card"><h2>Your App Store is live.</h2><p>This link has been checked with GitHub Pages and opens directly to the App Store on another phone.</p><div id="shareUrl" class="url"></div><div class="actions"><button id="copyLink">Copy link</button><a id="openLink" class="live" target="_blank" rel="noopener">Open App Store ↗</a></div></div></aside>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Master Coding. Build. Earn.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0f;
+    --bg-2:#0d0d14;
+    --surface:#12121a;
+    --surface-2:#181822;
+    --border:rgba(168,85,247,0.18);
+    --purple:#a855f7;
+    --cyan:#22d3ee;
+    --pink:#ec4899;
+    --lime:#bef575;
+    --text:#f2f2f7;
+    --text-dim:#9a9aab;
+    --text-faint:#5c5c6e;
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--purple);color:#fff;}
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;border:none;}
+  img{max-width:100%;display:block;}
+  :focus-visible{outline:2px solid var(--cyan);outline-offset:3px;}
+
+  .mono{font-family:var(--font-mono);}
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--cyan);
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+
+  /* ============ LOGIN GATE ============ */
+  #login-gate{
+    position:fixed;inset:0;z-index:1000;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(168,85,247,0.12), transparent 45%),
+      radial-gradient(circle at 80% 80%, rgba(34,211,238,0.10), transparent 45%),
+      var(--bg);
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;
+    transition:opacity .6s ease, filter .6s ease, visibility .6s;
+  }
+  #login-gate.hidden{opacity:0;filter:blur(12px);visibility:hidden;pointer-events:none;}
+
+  #login-gate canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0.35;}
+
+  .login-card{
+    position:relative;
+    width:100%;max-width:400px;
+    background:rgba(18,18,26,0.75);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:40px 32px;
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    box-shadow:0 0 0 1px rgba(255,255,255,0.02), 0 30px 60px -20px rgba(168,85,247,0.25);
+    animation:card-in .8s cubic-bezier(.16,1,.3,1);
+  }
+  @keyframes card-in{from{opacity:0;transform:translateY(24px) scale(.97);}to{opacity:1;transform:none;}}
+
+  .login-logo{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:1.9rem;
+    text-align:center;
+    letter-spacing:0.02em;
+    background:linear-gradient(90deg,var(--purple),var(--cyan));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .login-sub{
+    text-align:center;color:var(--text-faint);font-size:0.82rem;margin-top:6px;margin-bottom:28px;
+    font-family:var(--font-mono);
+  }
+  .field{margin-bottom:18px;}
+  .field label{
+    display:block;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--text-dim);margin-bottom:8px;font-family:var(--font-mono);
+  }
+  .field input{
+    width:100%;padding:13px 14px;border-radius:10px;
+    background:var(--surface-2);
+    border:1px solid rgba(255,255,255,0.07);
+    color:var(--text);font-size:0.95rem;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  .field input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(168,85,247,0.15);}
+  .login-btn{
+    width:100%;padding:14px;border-radius:10px;margin-top:6px;
+    background:linear-gradient(90deg,var(--purple),var(--cyan));
+    color:#0a0a0f;font-weight:700;font-size:0.95rem;letter-spacing:0.01em;
+    transition:transform .2s, box-shadow .2s;
+    box-shadow:0 8px 24px -8px rgba(168,85,247,0.55);
+  }
+  .login-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px -8px rgba(34,211,238,0.5);}
+  .login-error{
+    color:var(--pink);font-size:0.8rem;text-align:center;margin-top:14px;
+    font-family:var(--font-mono);min-height:18px;
+  }
+  .shake{animation:shake .4s;}
+  @keyframes shake{
+    10%,90%{transform:translateX(-2px);}
+    20%,80%{transform:translateX(4px);}
+    30%,50%,70%{transform:translateX(-8px);}
+    40%,60%{transform:translateX(8px);}
+  }
+  .login-hint{
+    text-align:center;margin-top:20px;font-size:0.72rem;color:var(--text-faint);
+    font-family:var(--font-mono);
+  }
+
+  /* ============ LANDING PAGE (hidden until login) ============ */
+  #site{display:none;}
+  #site.visible{display:block;}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+
+  /* NAV */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:200;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 32px;
+    background:rgba(10,10,15,0.7);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(255,255,255,0.05);
+  }
+  .nav-logo{font-family:var(--font-display);font-weight:700;font-size:1.15rem;letter-spacing:0.02em;}
+  .nav-logo span{color:var(--cyan);}
+  .logout-btn{
+    font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);
+    padding:8px 16px;border:1px solid rgba(255,255,255,0.1);border-radius:20px;
+    background:transparent;transition:.2s;
+  }
+  .logout-btn:hover{border-color:var(--pink);color:var(--pink);}
+
+  /* HERO */
+  .hero{
+    position:relative;min-height:100vh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;overflow:hidden;padding:120px 24px 60px;
+  }
+  #matrix-canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0.5;}
+  .hero::before{
+    content:'';position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(168,85,247,0.16), transparent 55%),
+      radial-gradient(ellipse at 20% 80%, rgba(34,211,238,0.10), transparent 50%),
+      radial-gradient(ellipse at 80% 75%, rgba(236,72,153,0.08), transparent 50%);
+    pointer-events:none;
+  }
+  .circuit-grid{
+    position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(168,85,247,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(168,85,247,0.06) 1px, transparent 1px);
+    background-size:48px 48px;
+    mask-image:radial-gradient(ellipse at 50% 40%, black 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .hero-inner{position:relative;z-index:2;max-width:920px;}
+  .hero-logo{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(3.2rem, 13vw, 8.5rem);
+    line-height:0.95;
+    letter-spacing:-0.02em;
+    background:linear-gradient(115deg,var(--purple) 10%, var(--cyan) 50%, var(--pink) 90%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 0 40px rgba(168,85,247,0.45));
+    transform:scale(0.5);opacity:0;
+    animation:zoom-in-hero 1.4s cubic-bezier(.16,1,.3,1) forwards;
+  }
+  @keyframes zoom-in-hero{
+    0%{transform:scale(2.4);opacity:0;filter:blur(10px) drop-shadow(0 0 0 transparent);}
+    60%{opacity:1;}
+    100%{transform:scale(1);opacity:1;filter:blur(0) drop-shadow(0 0 40px rgba(168,85,247,0.45));}
+  }
+  .hero-by{
+    font-family:var(--font-mono);font-size:1rem;letter-spacing:0.15em;text-transform:uppercase;
+    color:var(--text-dim);margin-top:6px;
+    opacity:0;animation:fade-up 0.9s ease forwards;animation-delay:1.1s;
+  }
+  .hero-by strong{color:var(--lime);font-weight:600;}
+  .hero h1{
+    font-family:var(--font-display);
+    font-size:clamp(1.7rem, 4.2vw, 3rem);
+    font-weight:700;line-height:1.15;margin-top:36px;
+    opacity:0;animation:fade-up 0.9s ease forwards;animation-delay:1.3s;
+  }
+  .hero h1 .hl{
+    background:linear-gradient(90deg,var(--cyan),var(--lime));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero p.sub{
+    font-size:clamp(1rem,1.6vw,1.15rem);color:var(--text-dim);margin-top:18px;
+    max-width:600px;margin-left:auto;margin-right:auto;line-height:1.6;
+    opacity:0;animation:fade-up 0.9s ease forwards;animation-delay:1.5s;
+  }
+  @keyframes fade-up{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
+  .hero-ctas{
+    display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:38px;
+    opacity:0;animation:fade-up 0.9s ease forwards;animation-delay:1.7s;
+  }
+  .btn-primary{
+    padding:16px 32px;border-radius:12px;font-weight:700;font-size:0.95rem;color:#0a0a0f;
+    background:linear-gradient(90deg,var(--purple),var(--cyan));
+    box-shadow:0 10px 30px -8px rgba(168,85,247,0.55);
+    transition:transform .25s, box-shadow .25s;
+  }
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 16px 36px -8px rgba(34,211,238,0.55);}
+  .btn-secondary{
+    padding:16px 32px;border-radius:12px;font-weight:700;font-size:0.95rem;
+    color:var(--lime);border:1px solid rgba(190,245,117,0.4);
+    background:rgba(190,245,117,0.05);
+    transition:.25s;
+  }
+  .btn-secondary:hover{background:rgba(190,245,117,0.12);border-color:var(--lime);transform:translateY(-3px);}
+  .trust-line{
+    margin-top:34px;font-family:var(--font-mono);font-size:0.78rem;color:var(--text-faint);
+    opacity:0;animation:fade-up 0.9s ease forwards;animation-delay:1.9s;
+  }
+  .trust-line span{color:var(--lime);}
+
+  /* SECTION HELPERS */
+  section{position:relative;padding:100px 0;}
+  .section-head{text-align:center;max-width:640px;margin:0 auto 56px;}
+  .section-head h2{
+    font-family:var(--font-display);font-size:clamp(1.8rem,3.6vw,2.6rem);font-weight:700;margin-top:14px;
+  }
+  .section-head p{color:var(--text-dim);margin-top:14px;line-height:1.6;}
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* TRUSTED BY */
+  .trusted{padding:56px 0;border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);}
+  .trusted-label{text-align:center;font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-faint);margin-bottom:28px;}
+  .logo-row{display:flex;flex-wrap:wrap;justify-content:center;gap:36px 52px;}
+  .logo-row span{
+    font-family:var(--font-mono);font-size:0.95rem;color:var(--text-faint);
+    letter-spacing:0.03em;transition:.3s;
+  }
+  .logo-row span:hover{color:var(--cyan);}
+
+  /* FEATURE CARDS */
+  .grid-features{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:22px;
+  }
+  .feature-card{
+    background:rgba(255,255,255,0.02);
+    border:1px solid var(--border);
+    border-radius:18px;padding:30px 26px;
+    backdrop-filter:blur(10px);
+    transition:transform .35s cubic-bezier(.16,1,.3,1), border-color .35s, box-shadow .35s;
+  }
+  .feature-card:hover{
+    transform:scale(1.035) translateY(-4px);
+    border-color:var(--accent, var(--purple));
+    box-shadow:0 20px 45px -20px var(--accent, rgba(168,85,247,0.6));
+  }
+  .feature-icon{
+    width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    font-size:1.4rem;margin-bottom:18px;
+    background:color-mix(in srgb, var(--accent, var(--purple)) 15%, transparent);
+    border:1px solid color-mix(in srgb, var(--accent, var(--purple)) 40%, transparent);
+  }
+  .feature-card h3{font-family:var(--font-display);font-size:1.1rem;margin-bottom:10px;}
+  .feature-card p{color:var(--text-dim);font-size:0.9rem;line-height:1.6;}
+
+  /* AD HIGHLIGHT */
+  .ad-highlight{
+    margin:0 24px;border-radius:28px;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(190,245,117,0.12), transparent 50%),
+      radial-gradient(circle at 85% 80%, rgba(236,72,153,0.14), transparent 50%),
+      var(--surface);
+    border:1px solid rgba(190,245,117,0.25);
+    padding:70px 40px;text-align:center;position:relative;overflow:hidden;
+  }
+  .ad-highlight .eyebrow{color:var(--lime);}
+  .ad-highlight .eyebrow::before{background:var(--lime);box-shadow:0 0 8px var(--lime);}
+  .ad-price{
+    font-family:var(--font-display);font-weight:700;
+    font-size:clamp(2.6rem,7vw,4.6rem);
+    margin:18px 0 8px;
+    background:linear-gradient(90deg,var(--lime),var(--cyan));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .ad-highlight h3{font-family:var(--font-display);font-size:1.4rem;color:var(--text-dim);font-weight:500;margin-bottom:36px;}
+  .ad-benefits{
+    display:flex;flex-wrap:wrap;justify-content:center;gap:14px 30px;margin-bottom:40px;
+    font-family:var(--font-mono);font-size:0.88rem;
+  }
+  .ad-benefits li{list-style:none;display:flex;align-items:center;gap:8px;color:var(--text);}
+  .ad-benefits li::before{content:'✓';color:var(--lime);font-weight:700;}
+  .ad-cta-row{display:flex;flex-direction:column;align-items:center;gap:14px;}
+  .whatsapp-line{font-family:var(--font-mono);font-size:0.85rem;color:var(--text-dim);}
+  .whatsapp-line a{color:var(--lime);font-weight:600;}
+
+  /* TESTIMONIALS */
+  .testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;}
+  .testi-card{
+    background:var(--surface);border:1px solid rgba(255,255,255,0.06);border-radius:18px;
+    padding:26px;transition:transform .3s, border-color .3s;
+  }
+  .testi-card:hover{transform:translateY(-4px);border-color:rgba(168,85,247,0.4);}
+  .testi-stars{color:var(--lime);letter-spacing:2px;margin-bottom:14px;font-size:0.9rem;}
+  .testi-quote{color:var(--text-dim);font-size:0.92rem;line-height:1.65;margin-bottom:20px;}
+  .testi-person{display:flex;align-items:center;gap:12px;}
+  .avatar{
+    width:40px;height:40px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-display);font-weight:700;color:#0a0a0f;font-size:0.9rem;
+  }
+  .testi-name{font-weight:600;font-size:0.88rem;}
+  .testi-role{font-size:0.76rem;color:var(--text-faint);font-family:var(--font-mono);}
+
+  /* HOW IT WORKS */
+  .steps-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;}
+  .step-card{
+    text-align:left;padding:28px 22px;border-radius:16px;
+    background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.06);
+    transition:transform .3s;
+  }
+  .step-card:hover{transform:translateY(-6px);}
+  .step-num{
+    font-family:var(--font-mono);font-size:0.78rem;color:var(--purple);
+    border:1px solid rgba(168,85,247,0.4);border-radius:20px;
+    padding:4px 12px;display:inline-block;margin-bottom:16px;
+  }
+  .step-card h4{font-family:var(--font-display);font-size:1.05rem;margin-bottom:8px;}
+  .step-card p{color:var(--text-dim);font-size:0.87rem;line-height:1.55;}
+
+  /* PROJECTS */
+  .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;}
+  .project-card{
+    border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,0.07);
+    background:var(--surface);
+  }
+  .project-thumb{
+    height:170px;position:relative;overflow:hidden;
+  }
+  .project-thumb .mock{
+    position:absolute;inset:0;transition:transform .5s cubic-bezier(.16,1,.3,1);
+    display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);
+    font-size:0.78rem;color:rgba(255,255,255,0.5);
+  }
+  .project-card:hover .mock{transform:scale(1.12);}
+  .project-info{padding:18px 20px;}
+  .project-info h4{font-family:var(--font-display);font-size:1rem;margin-bottom:4px;}
+  .project-info p{color:var(--text-faint);font-size:0.8rem;font-family:var(--font-mono);}
+
+  /* FINAL CTA */
+  .final-cta{
+    text-align:center;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(168,85,247,0.18), transparent 60%),
+      var(--bg-2);
+    border-top:1px solid rgba(255,255,255,0.05);
+  }
+  .final-cta h2{
+    font-family:var(--font-display);font-weight:700;
+    font-size:clamp(2rem,5vw,3.4rem);line-height:1.1;margin-bottom:36px;
+  }
+  .final-cta h2 .hl{
+    background:linear-gradient(90deg,var(--purple),var(--pink));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .final-btns{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;}
+
+  footer{
+    padding:36px 24px;text-align:center;border-top:1px solid rgba(255,255,255,0.05);
+    font-family:var(--font-mono);font-size:0.78rem;color:var(--text-faint);
+  }
+
+  @media (max-width:640px){
+    section{padding:70px 0;}
+    .ad-highlight{padding:50px 24px;margin:0 12px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN GATE ============ -->
+<div id="login-gate">
+  <canvas id="login-canvas"></canvas>
+  <form class="login-card" id="login-form" autocomplete="off">
+    <div class="login-logo">CODE-X</div>
+    <div class="login-sub">// authenticate to continue</div>
+
+    <div class="field">
+      <label for="username">Username</label>
+      <input type="text" id="username" placeholder="code-x" required>
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="••••" required>
+    </div>
+
+    <button type="submit" class="login-btn">Login →</button>
+    <div class="login-error" id="login-error"></div>
+    <div class="login-hint">Demo credentials — username: <b>code-x</b> · password: <b>1234</b></div>
+  </form>
+</div>
+
+<!-- ============ LANDING PAGE ============ -->
+<div id="site">
+
+  <nav>
+    <div class="nav-logo">CODE<span>-X</span></div>
+    <button class="logout-btn" id="logout-btn">Logout</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <canvas id="matrix-canvas"></canvas>
+    <div class="circuit-grid"></div>
+    <div class="hero-inner">
+      <div class="eyebrow" style="margin-bottom:22px;">System online</div>
+      <div class="hero-logo">CODE-X</div>
+      <div class="hero-by">by <strong>Rocky</strong></div>
+      <h1>Master Coding. Build Real Projects. <span class="hl">Earn Money.</span></h1>
+      <p class="sub">Learn faster with AI. Create stunning websites &amp; apps. Get your first client in 30 days.</p>
+      <div class="hero-ctas">
+        <a href="#why" class="btn-primary">Start Learning Free</a>
+        <a href="#offer" class="btn-secondary">Get Website in ₹50</a>
+      </div>
+      <div class="trust-line">Trusted by <span>1000+</span> students &amp; developers · <span>4.9/5</span> rating</div>
+    </div>
+  </section>
+
+  <!-- TRUSTED BY -->
+  <div class="trusted">
+    <div class="trusted-label">Students building with Code-X, from</div>
+    <div class="logo-row">
+      <span>IIT Madras</span><span>Anna University</span><span>VIT Vellore</span>
+      <span>NIT Trichy</span><span>SRM Chennai</span><span>PSG Tech</span>
+    </div>
+  </div>
+
+  <!-- WHY CODE-X -->
+  <section id="why" class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Why Code-X</div>
+      <h2>Everything you need to go from learner to earner</h2>
+      <p>Six tools, one platform — built to take you from your first line of code to your first paying client.</p>
+    </div>
+    <div class="grid-features">
+      <div class="feature-card reveal" style="--accent:var(--purple)">
+        <div class="feature-icon">🤖</div>
+        <h3>AI Code Assistant</h3>
+        <p>Stuck on a bug? Ask the built-in AI and get instant, line-by-line explanations — not just answers.</p>
+      </div>
+      <div class="feature-card reveal" style="--accent:var(--cyan)">
+        <div class="feature-icon">🧩</div>
+        <h3>Real Project Challenges</h3>
+        <p>Skip the toy exercises. Build the same kind of apps and sites clients actually pay for.</p>
+      </div>
+      <div class="feature-card reveal" style="--accent:var(--pink)">
+        <div class="feature-icon">🗂️</div>
+        <h3>Portfolio Builder</h3>
+        <p>Every project you finish is auto-packaged into a shareable portfolio recruiters can browse.</p>
+      </div>
+      <div class="feature-card reveal" style="--accent:var(--lime)">
+        <div class="feature-icon">₹</div>
+        <h3>₹50 Website Service</h3>
+        <p>New to coding? Rocky's team builds your first live website for ₹50 so you launch on day one.</p>
+      </div>
+      <div class="feature-card reveal" style="--accent:var(--purple)">
+        <div class="feature-icon">💬</div>
+        <h3>Community Support</h3>
+        <p>A always-on community of learners and mentors to unblock you, day or night.</p>
+      </div>
+      <div class="feature-card reveal" style="--accent:var(--cyan)">
+        <div class="feature-icon">🚀</div>
+        <h3>Fast Track to Freelancing</h3>
+        <p>Guided playbooks to land your first freelance client within 30 days of starting.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- AD HIGHLIGHT -->
+  <section id="offer">
+    <div class="ad-highlight reveal">
+      <div class="eyebrow">Special offer for beginners</div>
+      <div class="ad-price">₹50 Website</div>
+      <h3>Professional. Live. Yours — in just ₹50.</h3>
+      <ul class="ad-benefits">
+        <li>Dark mode included</li>
+        <li>Colorful, modern design</li>
+        <li>Mobile friendly</li>
+        <li>Fast delivery (24–48 hrs)</li>
+      </ul>
+      <div class="ad-cta-row">
+        <a href="https://wa.me/919876543210" target="_blank" rel="noopener" class="btn-primary">Book Your ₹50 Website Now</a>
+        <div class="whatsapp-line">Or message Rocky directly on WhatsApp: <a href="https://wa.me/919876543210" target="_blank" rel="noopener">+91 98765 43210</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Success stories</div>
+      <h2>Students who built, launched, and got paid</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">Rocky sir helped me create my first website in just ₹50 using Code-X. I never thought I'd have a live site this fast.</p>
+        <div class="testi-person">
+          <div class="avatar" style="background:var(--purple)">A</div>
+          <div><div class="testi-name">Arun K.</div><div class="testi-role">2nd yr, Anna University</div></div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">The AI assistant explains bugs better than my seniors do. Went from zero to my first freelance gig in 5 weeks.</p>
+        <div class="testi-person">
+          <div class="avatar" style="background:var(--cyan)">P</div>
+          <div><div class="testi-name">Priya S.</div><div class="testi-role">CSE, VIT Vellore</div></div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">Portfolio builder got me shortlisted for an internship before I even finished the course. Worth every rupee.</p>
+        <div class="testi-person">
+          <div class="avatar" style="background:var(--pink)">M</div>
+          <div><div class="testi-name">Mohammed R.</div><div class="testi-role">IT, SRM Chennai</div></div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">Community support at 1am when I was stuck on a deploy issue — someone actually answered. Real people, real help.</p>
+        <div class="testi-person">
+          <div class="avatar" style="background:var(--lime);color:#0a0a0f">S</div>
+          <div><div class="testi-name">Sneha V.</div><div class="testi-role">3rd yr, PSG Tech</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">How it works</div>
+      <h2>Four steps from zero to shipped</h2>
+    </div>
+    <div class="steps-row">
+      <div class="step-card reveal">
+        <div class="step-num">01</div>
+        <h4>Sign up free</h4>
+        <p>Create your account and pick a track — web, app, or freelancing.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">02</div>
+        <h4>Learn with AI</h4>
+        <p>Work through bite-sized lessons with the AI assistant unblocking you live.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">03</div>
+        <h4>Build real projects</h4>
+        <p>Ship apps and sites that go straight into your portfolio.</p>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">04</div>
+        <h4>Get your first client</h4>
+        <p>Use Rocky's freelancing playbook to land paid work within 30 days.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED PROJECTS -->
+  <section class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Featured projects</div>
+      <h2>Built by students, shipped with Code-X</h2>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card reveal">
+        <div class="project-thumb" style="background:linear-gradient(135deg,rgba(168,85,247,0.35),rgba(10,10,15,0.9))">
+          <div class="mock">portfolio-site.dev</div>
+        </div>
+        <div class="project-info"><h4>Personal Portfolio</h4><p>₹50 website · dark mode</p></div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-thumb" style="background:linear-gradient(135deg,rgba(34,211,238,0.35),rgba(10,10,15,0.9))">
+          <div class="mock">local-bakery.shop</div>
+        </div>
+        <div class="project-info"><h4>Local Business Site</h4><p>₹50 website · e-commerce</p></div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-thumb" style="background:linear-gradient(135deg,rgba(236,72,153,0.35),rgba(10,10,15,0.9))">
+          <div class="mock">taskflow-app.io</div>
+        </div>
+        <div class="project-info"><h4>Task Manager App</h4><p>Full-stack project</p></div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-thumb" style="background:linear-gradient(135deg,rgba(190,245,117,0.3),rgba(10,10,15,0.9))">
+          <div class="mock">campus-events.net</div>
+        </div>
+        <div class="project-info"><h4>Campus Events Board</h4><p>₹50 website · mobile-first</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta wrap">
+    <h2>Ready to Start Your<br><span class="hl">Coding Journey?</span></h2>
+    <div class="final-btns">
+      <a href="#why" class="btn-primary">Join Code-X Now</a>
+      <a href="#offer" class="btn-secondary">Get Your Website for ₹50</a>
+    </div>
+  </section>
+
+  <footer>
+    CODE-X by Rocky · Built for students &amp; aspiring developers in India · © 2026
+  </footer>
+
+</div>
+
 <script>
-const apps=[['ChatGPT','AI','America','openai','The global leader in conversational AI.','#6958ef','https://chatgpt.com'],['Google Gemini','AI','America','googlegemini','Fast assistance and image generation.','#4d91ff','https://gemini.google.com'],['Instagram','Social','America','instagram','Visual culture, Reels, and connection.','#e8448b','https://instagram.com'],['WhatsApp','Social','Asia','whatsapp','The world’s favorite way to message.','#20b868','https://whatsapp.com'],['WhatsApp Business','Social','Asia','whatsapp','Powering the next small business.','#1f9661','https://business.whatsapp.com'],['X','Social','America','x','The live global conversation.','#303747','https://x.com'],['Discord','Social','America','discord','Communities, study sessions, and voice.','#5965f2','https://discord.com'],['Spotify','Media','America','spotify','Music for every orbit.','#1fbb5c','https://spotify.com'],['YouTube','Media','America','youtube','Stories, shorts, and live culture.','#e62c37','https://youtube.com'],['Crunchyroll','Media','America','crunchyroll','Anime, always on.','#f07727','https://crunchyroll.com'],['Netflix','Media','America','netflix','The screen everyone shares.','#d5222a','https://netflix.com'],['Duolingo','Utility','America','duolingo','A joyful daily learning habit.','#65b92f','https://duolingo.com'],['Zoom Workplace','Utility','America','zoom','Meet, create, and connect.','#4c7ced','https://zoom.us'],['CapCut','Media','Asia','capcut','Edit culture at the speed of scroll.','#596174','https://capcut.com'],['TikTok','Social','Asia','tiktok','The global discovery engine.','#22212c','https://tiktok.com'],['Canva','Utility','Asia','canva','Design anything, beautifully.','#1db9b2','https://canva.com'],['LINE','Social','Asia','line','Stickers, stories, and community.','#23b65e','https://line.me'],['Grab','Utility','Asia','grab','Everyday services across Southeast Asia.','#28a25e','https://grab.com'],['Shopee','Utility','Asia','shopee','Shopping, local and live.','#ef5a2c','https://shopee.com']];
-let chosen=[],name='Creator',token='',filter='All';const $=s=>document.querySelector(s),icon=s=>'https://cdn.jsdelivr.net/npm/simple-icons@v13/icons/'+s+'.svg';const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));const bytes=s=>btoa(unescape(encodeURIComponent(s)));const pack=o=>btoa(unescape(encodeURIComponent(JSON.stringify(o))));const unpack=s=>JSON.parse(decodeURIComponent(escape(atob(s))));
-function notice(message){$('#toast').textContent=message;$('#toast').classList.add('on');setTimeout(()=>$('#toast').classList.remove('on'),2800)}function show(id){document.querySelectorAll('.screen').forEach(item=>item.classList.toggle('active',item.id===id));scrollTo(0,0)}
-function draw(){const visible=apps.filter(app=>filter==='All'||app[1]===filter);$('#grid').innerHTML=visible.map(app=>{const id=apps.indexOf(app),active=chosen.includes(id);return `<article class="app ${active?'selected':''}" data-id="${id}" style="--glow:${app[5]}"><b class="check">${active?'✓':''}</b><img class="app-icon" src="${icon(app[3])}" alt="${app[0]} logo" onerror="this.style.display='none'"><h3>${app[0]}</h3><small>${app[4]}</small><i class="region">${app[2]}</i></article>`}).join('');document.querySelectorAll('.app').forEach(card=>card.onclick=()=>pick(Number(card.dataset.id)))}
-function pick(id){if(chosen.includes(id))chosen=chosen.filter(value=>value!==id);else if(chosen.length<10)chosen.push(id);else return notice('Your orbit is full — remove an app first');$('#count').textContent=chosen.length;const more=10-chosen.length;$('#generateText').textContent=more?'Select '+more+' more app'+(more===1?'':'s')+' to generate':'Your 10 apps are ready';$('#generateButton').disabled=Boolean(more);draw()}
-document.querySelectorAll('.filter').forEach(button=>button.onclick=()=>{filter=button.dataset.filter;document.querySelectorAll('.filter').forEach(item=>item.classList.toggle('active',item===button));draw()});
-$('#loginForm').onsubmit=event=>{event.preventDefault();if($('#user').value.trim()!=='code-x'||$('#pass').value!=='1234')return notice('Access was not recognised');name=prompt('Your name')||'Creator';token=prompt('GitHub token for publishing the live App Store link')||'';$('#creator').textContent=name;$('#initial').textContent=name[0].toUpperCase();show('setup');draw()};
-function renderStore(){$('#deck').innerHTML=chosen.map(id=>{const app=apps[id];return `<article class="spot" style="--card:${app[5]}"><a class="logo-link" href="${app[6]}" target="_blank" rel="noopener" aria-label="Open ${app[0]}"><img src="${icon(app[3])}" alt="${app[0]} logo"></a><h3>${app[0]}</h3><span>${app[4]}</span><a class="open" href="${app[6]}" target="_blank" rel="noopener">Open ${app[0]} ↗</a></article>`}).join('');$('#curatedBy').textContent='CURATED BY '+name.toUpperCase()}
-async function gh(path,options={}){const response=await fetch('https://api.github.com'+path,{...options,headers:{Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28',Authorization:'Bearer '+token,...(options.headers||{})}});if(!response.ok){const error=await response.json().catch(()=>({}));throw Error(error.message||'GitHub could not publish this App Store')};return response.status===204?null:response.json()}
-async function waitForPages(owner,repo){const until=Date.now()+120000;while(Date.now()<until){const site=await gh('/repos/'+owner+'/'+repo+'/pages');if(site.status==='built'&&site.html_url)return site.html_url;if(site.status==='errored')throw Error('GitHub Pages could not build this App Store');await wait(3000)}throw Error('GitHub Pages is still building. Please generate again in a minute.')}
-async function publish(){if(!token)return notice('A GitHub token is needed to create a phone-ready live link');const button=$('#generateButton');button.disabled=true;button.textContent='Publishing…';try{const user=await gh('/user');const repo='orbit-appstore-'+Date.now().toString(36);await gh('/user/repos',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:repo,description:'A shareable Orbit App Store',private:false,auto_init:false})});const source='<!doctype html>\n'+document.documentElement.outerHTML;await gh('/repos/'+user.login+'/'+repo+'/contents/index.html',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'Publish Orbit App Store',content:bytes(source),branch:'main'})});await gh('/repos/'+user.login+'/'+repo+'/pages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source:{branch:'main',path:'/'}})});button.textContent='Checking live link…';const base=await waitForPages(user.login,repo);const url=base+'#appstore='+encodeURIComponent(pack({n:name,a:chosen}));$('#shareUrl').textContent=url;$('#openLink').href=url;$('#shareModal').classList.add('show');navigator.clipboard?.writeText(url);notice('Live link copied')}catch(error){notice(error.message)}finally{button.disabled=false;button.textContent='Generate link ✦'}}
-$('#generateButton').onclick=publish;$('#copyLink').onclick=()=>{navigator.clipboard?.writeText($('#shareUrl').textContent);notice('Link copied')};$('#exit').onclick=()=>show('setup');$('#deck').addEventListener('scroll',event=>{const deck=event.target,ratio=deck.scrollTop/(deck.scrollHeight-deck.clientHeight||1);$('#phone').style.transform=`rotateX(${8-ratio*7}deg) rotateY(${-12+ratio*20}deg) scale(${1+ratio*.06})`});
-if(location.hash.startsWith('#appstore=')){try{const data=unpack(decodeURIComponent(location.hash.slice(10)));name=data.n||'Creator';chosen=(data.a||[]).filter(id=>apps[id]);renderStore();show('showcase');document.querySelector('.show-head').style.display='none'}catch(error){location.hash=''}}
-;(()=>{let theme='aurora';const themes={aurora:['Aurora Orbit','Iridescent light and orbital glow'],neon:['Neon Coverflow','Electric depth and glass reflections'],slate:['Slate Cascade','Calm architectural layers'],obsidian:['Obsidian Cube','Dark crystalline dimensionality'],sunset:['Sunset Fan','Warm cinematic gradient arcs']};document.head.insertAdjacentHTML('beforeend',`<style>.theme-picker{margin:4px 0 22px}.theme-title{display:flex;justify-content:space-between;align-items:center;margin:0 0 10px;color:#c9cbed;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.theme-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}.theme-tile{min-height:104px;padding:12px 10px;text-align:left;border:1px solid #ffffff1c;border-radius:16px;background:#141527;color:#fff;position:relative;overflow:hidden}.theme-tile:before{content:'';position:absolute;inset:0;opacity:.8;background:var(--preview)}.theme-tile>*{position:relative;z-index:1}.theme-tile b{display:block;font-size:12px;line-height:1.05}.theme-tile small{display:block;margin-top:8px;color:#dadbf0;font-size:9px;line-height:1.25}.theme-tile.active{border-color:#fff;box-shadow:0 0 0 2px #987cff55}.theme-aurora .stage{background:radial-gradient(circle at 50% 20%,#321a67,#090a1a 43%,#04040a 85%)}.theme-aurora .spot{box-shadow:0 19px 38px #0008,0 0 38px var(--card)}.theme-neon .stage{background:repeating-linear-gradient(90deg,#070812 0 1px,#080a1c 1px 50px),radial-gradient(circle at 50% 10%,#032b56,#080812 55%)}.theme-neon .phone{box-shadow:0 0 0 1px #7af9ff,0 0 35px #2aeeff99,20px 30px 80px #000}.theme-neon .spot{border:1px solid #6df5ff99;box-shadow:inset 0 1px #ffffff99,0 18px 42px #00e5ff55;transform:rotateY(-4deg)}.theme-slate .stage{background:linear-gradient(135deg,#27323e,#10151d 46%,#06080c)}.theme-slate .phone{border-radius:30px;background:linear-gradient(145deg,#98a9b7,#1b2630 16%,#596d7b)}.theme-slate .device{border-radius:23px;background:linear-gradient(145deg,#2e4150,#111b24)}.theme-slate .spot{border-radius:12px;background:linear-gradient(145deg,#71899a,#182631 59%,#0a1118);box-shadow:18px 22px 0 #0003,0 20px 45px #0009}.theme-obsidian .stage{background:radial-gradient(ellipse at 30% 30%,#25223c,#07070e 58%)}.theme-obsidian .phone{background:linear-gradient(125deg,#0b0b12,#4b4961 49%,#09090f);box-shadow:25px 32px 75px #000,0 0 0 1px #aaa8d144}.theme-obsidian .spot{background:linear-gradient(135deg,#1b1a2a,#06070c 62%,#343246);border:1px solid #ffffff30;clip-path:polygon(8% 0,92% 0,100% 8%,100% 92%,92% 100%,8% 100%,0 92%,0 8%)}.theme-sunset .stage{background:radial-gradient(circle at 60% 15%,#7b335c,#311637 38%,#100d22 68%)}.theme-sunset .phone{background:linear-gradient(145deg,#ffb36b,#532545 14%,#ca5379);box-shadow:0 0 45px #ff6d6855,24px 34px 75px #000}.theme-sunset .spot{background:linear-gradient(145deg,#f29a64,#b44e69 47%,#3d2555);box-shadow:0 21px 45px #ff5f7960}.theme-sunset .spot:after{border-color:#ffe7b455;box-shadow:0 0 0 20px #ffe7b415,0 0 0 42px #ffe7b410}@media(max-width:720px){.theme-strip{grid-template-columns:repeat(5,minmax(105px,1fr));overflow-x:auto;padding-bottom:5px}.theme-tile{min-height:92px}}</style>`);let picker=document.getElementById('themePicker');if(!picker){picker=document.createElement('section');picker.id='themePicker';picker.className='theme-picker';document.querySelector('.filters').insertAdjacentElement('afterend',picker)}function paintPicker(){picker.innerHTML=`<div class="theme-title"><span>Premium 3D experience</span><span>${themes[theme][0]}</span></div><div class="theme-strip">${Object.entries(themes).map(([key,value],n)=>`<button class="theme-tile ${key===theme?'active':''}" data-theme="${key}" style="--preview:${['radial-gradient(circle,#ff77be,#4f3cff 70%)','linear-gradient(135deg,#0ce9ff,#3916a8 50%,#ff1fe1)','linear-gradient(135deg,#91aaba,#1b2a34 60%)','linear-gradient(135deg,#4d4a62,#090910 55%)','linear-gradient(135deg,#ffc079,#c34d73 55%,#43265c)'][n]}"><b>${value[0]}</b><small>${value[1]}</small></button>`).join('')}</div>`;picker.querySelectorAll('[data-theme]').forEach(button=>button.onclick=()=>{theme=button.dataset.theme;paintPicker();applyTheme()})}function applyTheme(){const page=$('#showcase');page.className='screen showcase theme-'+theme+(page.classList.contains('active')?' active':'')}function renderThemedStore(){$('#deck').innerHTML=chosen.map(id=>{const app=apps[id];return `<article class="spot" style="--card:${app[5]}"><a class="logo-link" href="${app[6]}" target="_blank" rel="noopener" aria-label="Open ${app[0]}"><img src="${icon(app[3])}" alt="${app[0]} logo"></a><h3>${app[0]}</h3><span>${app[4]}</span><a class="open" href="${app[6]}" target="_blank" rel="noopener">Open ${app[0]} ↗</a></article>`}).join('');$('#curatedBy').textContent='CURATED BY '+name.toUpperCase();applyTheme()}renderStore=renderThemedStore;paintPicker();applyTheme();async function publishTheme(){if(!token)return notice('A GitHub token is needed to create a phone-ready live link');const button=$('#generateButton');button.disabled=true;button.textContent='Publishing…';try{const user=await gh('/user');const repo='orbit-appstore-'+Date.now().toString(36);await gh('/user/repos',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:repo,description:'A shareable Orbit App Store',private:false,auto_init:false})});const source='<!doctype html>\n'+document.documentElement.outerHTML;await gh('/repos/'+user.login+'/'+repo+'/contents/index.html',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'Publish Orbit App Store',content:bytes(source),branch:'main'})});await gh('/repos/'+user.login+'/'+repo+'/pages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source:{branch:'main',path:'/'}})});button.textContent='Checking live link…';const base=await waitForPages(user.login,repo);const url=base+'#appstore='+encodeURIComponent(pack({n:name,a:chosen,t:theme}));$('#shareUrl').textContent=url;$('#openLink').href=url;$('#shareModal').classList.add('show');navigator.clipboard?.writeText(url);notice('Live link copied')}catch(error){notice(error.message)}finally{button.disabled=false;button.textContent='Generate link ✦'}}$('#generateButton').onclick=publishTheme;if(location.hash.startsWith('#appstore=')){try{const shared=unpack(decodeURIComponent(location.hash.slice(10)));theme=themes[shared.t]?shared.t:'aurora';renderThemedStore();document.querySelector('.show-head').style.display='none'}catch(error){}}})();
+  // ============ LOGIN LOGIC ============
+  const loginGate = document.getElementById('login-gate');
+  const loginForm = document.getElementById('login-form');
+  const loginError = document.getElementById('login-error');
+  const site = document.getElementById('site');
+  const logoutBtn = document.getElementById('logout-btn');
+
+  loginForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    const u = document.getElementById('username').value.trim();
+    const p = document.getElementById('password').value.trim();
+
+    if(u === 'code-x' && p === '1234'){
+      loginGate.classList.add('hidden');
+      site.classList.add('visible');
+      document.body.style.overflow = 'auto';
+      startMatrixRain(); // start hero canvas animation once visible
+    } else {
+      loginError.textContent = 'Invalid username or password. Try again.';
+      loginForm.querySelector('.login-card') ? null : null;
+      const card = document.querySelector('.login-card');
+      card.classList.remove('shake');
+      void card.offsetWidth; // restart animation
+      card.classList.add('shake');
+    }
+  });
+
+  logoutBtn.addEventListener('click', function(){
+    site.classList.remove('visible');
+    loginGate.classList.remove('hidden');
+    document.getElementById('password').value = '';
+    loginError.textContent = '';
+  });
+
+  // ============ BACKGROUND MATRIX RAIN (login screen) ============
+  function drawSimpleRain(canvas){
+    const ctx = canvas.getContext('2d');
+    function resize(){canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;}
+    resize();
+    window.addEventListener('resize', resize);
+    const chars = '01{}<>/;=+-*#'.split('');
+    const fontSize = 14;
+    let columns = Math.floor(canvas.width / fontSize);
+    let drops = new Array(columns).fill(1);
+    function frame(){
+      ctx.fillStyle = 'rgba(10,10,15,0.15)';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.font = fontSize + 'px monospace';
+      for(let i=0;i<drops.length;i++){
+        const text = chars[Math.floor(Math.random()*chars.length)];
+        ctx.fillStyle = Math.random() > 0.97 ? '#22d3ee' : 'rgba(168,85,247,0.55)';
+        ctx.fillText(text, i*fontSize, drops[i]*fontSize);
+        if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i]=0;
+        drops[i]++;
+      }
+      requestAnimationFrame(frame);
+    }
+    frame();
+  }
+  drawSimpleRain(document.getElementById('login-canvas'));
+
+  let matrixStarted = false;
+  function startMatrixRain(){
+    if(matrixStarted) return;
+    matrixStarted = true;
+    drawSimpleRain(document.getElementById('matrix-canvas'));
+  }
+
+  // ============ SCROLL REVEAL ============
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.15});
+  revealEls.forEach(el=>observer.observe(el));
 </script>
-</body></html>
+
+</body>
+</html>
